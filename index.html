@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>ページのタイトル</title>
 </head>
@@ -9,5 +10,13 @@
     <input type="text" id="name" name="user_name" placeholder="例：山田 太郎">
     <h1>こんにちは！</h1>
     <p>これはHTMLの練習です。</p>
+    <button id="btn">クリック</button>
+
+    <button id="btn2">クリック</button>
+    <script>
+        // ここに直接JavaScriptを書く
+        const btn = document.getElementById('btn');
+        btn.onclick = () => alert('動きました！');
+    </script>
 </body>
 </html>
