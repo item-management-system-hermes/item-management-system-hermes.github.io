@@ -9,15 +9,26 @@
     <label for="name">お名前：</label>
     <input type="text" id="name" name="user_name" placeholder="例：山田 太郎">
     <h1>こんにちは！</h1>
-    <p>これはHTMLの練習です。</p>
+    <p>在庫検索</p>
     <button id="btn">クリック</button>
 
-    <p>これはHTMLの練習です。</p>
+    <p id="message">在庫表編集。</p>
     <button id="btn2">クリック</button>
     <script>
         // ここに直接JavaScriptを書く
-        const btn = document.getElementById('btn');
+        const btn = document.getElementById('btn2');
         btn.onclick = () => alert('動きました！');
+        // 1. 要素を取得
+        const textElement = document.getElementById('message');
+        const buttonElement = document.getElementById('btn2');
+
+        // 2. ボタンをクリックした時の処理を設定
+        buttonElement.addEventListener('click', () => {
+        // 3. テキストの内容を書き換える
+        textElement.textContent = 'テキストが書き換わりました！';
+});
     </script>
+    
+    <h1>こんにちは！</h1>
 </body>
 </html>
