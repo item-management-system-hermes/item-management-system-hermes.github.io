@@ -12,8 +12,9 @@
     <p>在庫検索</p>
     <button id="btn">クリック</button>
 
-    <p id="message">在庫表編集。</p>
+    <p>在庫表編集。</p>
     <button id="btn2">クリック</button>
+    <p id="message"></p>
     <script>
         // ここに直接JavaScriptを書く
         const btn = document.getElementById('btn2');
@@ -34,9 +35,8 @@
             li.textContent = i + '個目のアイテム';
             fragment.appendChild(li); // ここではまだ画面は変わらない
 }
-        document.getElementById('btn2').appendChild(fragment); // ここで一気に表示！
+        document.getElementById('message').appendChild(fragment); // ここで一気に表示！
     </script>
     
-    <h1>こんにちは！</h1>
 </body>
 </html>
