@@ -27,6 +27,14 @@
         // 3. テキストの内容を書き換える
         textElement.textContent = 'テキストが書き換わりました！';
 });
+
+        const fragment = document.createDocumentFragment();
+        for (let i = 1; i <= 100; i++) {
+            const li = document.createElement('h1');
+            li.textContent = i + '個目のアイテム';
+            fragment.appendChild(li); // ここではまだ画面は変わらない
+}
+        document.getElementById('message').appendChild(fragment); // ここで一気に表示！
     </script>
     
     <h1>こんにちは！</h1>
