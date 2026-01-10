@@ -3,114 +3,165 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>ページのタイトル</title>
+    <title>食材管理アプリ</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .item { border-bottom: 1px solid #ccc; padding: 5px; }
+        .alert { color: red; font-weight: bold; }
+        button { margin: 5px; padding: 10px; }
+    </style>
 </head>
 <body>
-    <label for="name">お名前：</label>
-    <input type="text" id="name" name="user_name" placeholder="例：山田 太郎">
-    <h1>こんにちは！</h1>
-
-    <p id="message"></p>
-    <button id="btn">クリック</button>
-    <p id="message2"></p>
-    <button id="btn2">クリック</button>
-    <script>
-        let INDEX=[]
-        let ID=[]
-        let IDNAME={}
-        let NUMBER=0
-        let key=0
-        let NAME
-        let BOX={}//値はすべて-1
-        let NOW = Date.now();// 例: 1736508364000 (巨大な10進法の数値)
-        NOW=NOW/86400000
-        
-        const button = document.getElementById('btn');
-        const button2 = document.getElementById('btn2');
-        const textElement = document.getElementById('message');
-        const textElement2 = document.getElementById('message2');
-
-        if (key == 0) {
-            textElement.textContent = '種類別検索';
-            textElement2.textContent = '期限切れ間近';
-            let a='種類別検索';
-            let b='期限切れ間近';
-            let c=1;
-            let d=2;
-        };
-        if (key == 1) {
-            textElement.textContent = '欠品表';
-            textElement2.textContent = '期限切れ間近';
-            let a='欠品表';
-            let b='期限切れ間近';
-            let c=0;
-            let d=2;
-        };
-        if (key == 2) {
-            textElement.textContent = '欠品表';
-            textElement2.textContent = '種類別検索';
-            let b='種類別検索';
-            let a='欠品表';
-            let c=0;
-            let d=1;
-        };
-        
-        button.onclick = () => alert(a);
-        button.addEventListener('click', () => {
-        key = c ;
-　　　　　});
-
-        button2.onclick = () => alert(b);
-        button2.addEventListener('click', () => {
-        key = d;
-　　　　　});
-
-        const fragment = document.createDocumentFragment();
-        for (let i = 0; i <= NUMBER-1; i++) {
-            const li = document.createElement('h1');
-            li.textContent = 0;
-            if ( key==0 ) {
-             if (INDEX[i][0] == 1) {
-                if (BOX[INDEX[i][1]] == -1) {
-                   BOX[INDEX[i][1]]==0
-                };
-                if (INDEX[i][3] != 0) {
-                   BOX[INDEX[i][1]]+=INDEX[i][3];
-                };
-             };
-             if (i == NUMBER-1) {
-                       for (let k = 0; k <= NUMBER-1; k++) {
-                           if (BOX[ID[k]]==0) {
-                               li.textContent =ID[k] ;
-                               fragment.appendChild(li);
-                           };
-                       };
-             };
-            };
-            if (key == 1) {   　　
-               if (INDEX[i][1] == NAME) {
-                   const fragment = document.createDocumentFragment();
-                   const li = document.createElement('h1');
-                   li.textContent = INDEX[i];
-                   fragment.appendChild(li);
-               };
-            };
-            if (key == 2) {   　　
-               if (INDEX[i][6]- NOW <= 3) {
-                   const fragment = document.createDocumentFragment();
-                   const li = document.createElement('h1');
-                   li.textContent = INDEX[i];
-                   fragment.appendChild(li);
-               };
-            }; // ここではまだ画面は変わらない
-       
- }
-        if (li.textContent == 0) {
-            li.textContent = "データ無し";
-            fragment.appendChild(li);
-        }
-        document.getElementById('message').appendChild(fragment); // ここで一気に表示！
-    </script>
+    <label for="name">食材検索：</label>
+    <input type="text" id="name" placeholder="例：にんじん">
     
+    <h1 id="main-title">こんにちは！</h1>
+
+    <p id="message_btn1">欠品リストを表示</p>
+    <button id="btn1">表示切り替え</button>
+
+    <p id="message_btn2">期限切れ間近を表示</p>
+    <button id="btn2">表示切り替え</button>
+
+    <hr>
+    <h2 id="current-mode">現在のモード: 準備中</h2>
+    <div id="text"></div>
+
+    <script>
+        // --- 1. データ定義 (テスト用データ) ---
+        // データ構造: [お気に入り(1or0), 種類ID, ID(名前), 在庫数, 単位, 購入日, 消費期限(UnixTime)]
+        // 今の日付を取得
+        const NOW_MS = Date.now();
+        const DAY_MS = 86400000; // 1日のミリ秒
+        
+        // テストデータを入れておきます（これがないと動きません）
+        const INDEX = [
+            [1, 101, "牛乳", 0, "本", NOW_MS - DAY_MS*5, NOW_MS + DAY_MS*1],   // お気に入りかつ在庫0、期限あと1日
+            [1, 102, "卵", 2, "個", NOW_MS - DAY_MS*2, NOW_MS + DAY_MS*10],    // 在庫あり
+            [0, 201, "人参", 3, "本", NOW_MS - DAY_MS*10, NOW_MS - DAY_MS*1],  // 期限切れ
+            [1, 202, "納豆", 0, "パック", NOW_MS, NOW_MS + DAY_MS*20]          // お気に入りかつ在庫0
+        ];
+
+        let key = 0; // 0:欠品表, 1:検索, 2:期限切れ
+
+        // --- 2. 要素の取得 ---
+        const btn1 = document.getElementById('btn1');
+        const btn2 = document.getElementById('btn2');
+        const msg1 = document.getElementById('message_btn1');
+        const msg2 = document.getElementById('message_btn2');
+        const resultArea = document.getElementById('text');
+        const modeTitle = document.getElementById('current-mode');
+        const inputName = document.getElementById('name');
+
+        // --- 3. 画面を描画する関数 (ここが重要！) ---
+        function render() {
+            // 結果エリアを一度クリア
+            resultArea.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+            let count = 0;
+
+            // ボタンのラベルなどをモードに合わせて更新
+            updateButtonLabels();
+
+            // データのループ処理
+            for (let i = 0; i < INDEX.length; i++) {
+                const item = INDEX[i];
+                const isFavorite = item[0];
+                const name = item[2];
+                const stock = item[3];
+                const expiry = item[6];
+                
+                let shouldDisplay = false;
+                let displayText = "";
+
+                // keyの値によって表示条件を変える
+                if (key == 0) { 
+                    // 【欠品表】お気に入りで、在庫が0のもの
+                    if (isFavorite == 1 && stock == 0) {
+                        shouldDisplay = true;
+                        displayText = `【買物】${name} (在庫なし)`;
+                    }
+                } else if (key == 1) {
+                    // 【検索】入力された名前と一致するもの
+                    const searchVal = inputName.value;
+                    if (searchVal && name.includes(searchVal)) {
+                        shouldDisplay = true;
+                        displayText = `【検索】${name} : 残り ${stock}${item[4]}`;
+                    }
+                } else if (key == 2) {
+                    // 【期限切れ間近】現在時刻との差が3日以内
+                    // 日数差を計算
+                    const diffDays = (expiry - Date.now()) / DAY_MS;
+                    if (diffDays <= 3) {
+                        shouldDisplay = true;
+                        displayText = `【期限】${name} : あと ${Math.ceil(diffDays)}日`;
+                    }
+                }
+
+                // 表示対象なら要素を作成
+                if (shouldDisplay) {
+                    const p = document.createElement('div');
+                    p.className = 'item';
+                    p.textContent = displayText;
+                    if(key === 2 && (expiry - Date.now()) < 0) {
+                        p.classList.add('alert'); // 期限切れは赤字
+                        p.textContent += " (期限切れ！)";
+                    }
+                    fragment.appendChild(p);
+                    count++;
+                }
+            }
+
+            // 1件もなかった場合
+            if (count == 0) {
+                const p = document.createElement('p');
+                p.textContent = "該当するデータはありません";
+                fragment.appendChild(p);
+            }
+
+            resultArea.appendChild(fragment);
+        }
+
+        // --- 4. ボタンのラベル管理 ---
+        function updateButtonLabels() {
+            if (key == 0) {
+                modeTitle.textContent = '現在のモード: 欠品リスト (買うもの)';
+                msg1.textContent = '→ 名前検索へ';
+                msg2.textContent = '→ 期限切れチェックへ';
+            } else if (key == 1) {
+                modeTitle.textContent = '現在のモード: 名前検索';
+                msg1.textContent = '→ 欠品リストへ';
+                msg2.textContent = '→ 期限切れチェックへ';
+            } else if (key == 2) {
+                modeTitle.textContent = '現在のモード: 期限切れ間近';
+                msg1.textContent = '→ 欠品リストへ';
+                msg2.textContent = '→ 名前検索へ';
+            }
+        }
+
+        // --- 5. イベントリスナー ---
+        // ボタン1: モードを 0(欠品) <-> 1(検索) で切り替え
+        btn1.addEventListener('click', () => {
+            if (key === 0) key = 1;
+            else key = 0;
+            render();
+        });
+
+        // ボタン2: モードを 2(期限) にする、または戻す
+        btn2.addEventListener('click', () => {
+            if (key === 2) key = 0; // 戻るときはとりあえず0へ
+            else key = 2;
+            render();
+        });
+
+        // 検索ボックスに入力したときも再描画（検索モード用）
+        inputName.addEventListener('input', () => {
+            if (key === 1) render();
+        });
+
+        // --- 6. 初回実行 ---
+        render();
+
+    </script>
 </body>
 </html>
