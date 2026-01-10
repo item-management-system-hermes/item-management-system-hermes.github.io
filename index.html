@@ -19,22 +19,37 @@
     <p id="text"></p>
     <script>
         function change(A,B,C) {
-           const fragment = document.createDocumentFragment();
            const li = document.createElement(B);
            li.textContent = C;
-           fragment.appendChild(li);
-           document.getElementById(A).appendChild(fragment);
+           A.appendChild(li);;
+        }
+        function K(D,N,F,FN) {
+        const fragment = document.createDocumentFragment();
+            for (i=0 i<=N-1 i++){
+                if (FN[F[i]]==0){
+                    change(fragment,"h1",D);
+                    change(fragment,"button","お気に入り解除");
+                        
+                    }
+                }
+            }
+        document.getElementById("text").appendChild(fragment);
         }
         function K() {
-            ;
         }
+
+
+        let DATABASE=[[111,1,1,"パック",,]]
+        let NUM=1
+        let FAV=[111]
         
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
         const button3 = document.getElementById('btn3');
         button.onclick = () => alert("a");
         button.addEventListener('click', () => {
-        change("text","h1","データ無し");})
+        K(DATABASE,N,F,FNAME);//NはFの個数、
+        })
     </script>
 </body>
 </html>
