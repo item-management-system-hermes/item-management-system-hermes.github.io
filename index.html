@@ -34,7 +34,7 @@
         let d
 
 
-        function change() {
+        function change(let NUMBER,let key,let BOX,let ID) {
           const fragment = document.createDocumentFragment();
           for (let i = 0; i <= NUMBER-1; i++) {
             const li = document.createElement('h1');
@@ -125,7 +125,7 @@
                d=1;
             };
             key = c ;
-            change();
+            change(NUMBER,key,BOX,ID);
 　　　　 });
 
         button2.onclick = () => alert(b);
@@ -155,7 +155,7 @@
                d=1;
             };
             key = d;
-            change();
+            change(NUMBER,key,BOX,ID);
         });
 
     </script>
