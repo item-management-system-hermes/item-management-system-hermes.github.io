@@ -32,59 +32,13 @@
         let b
         let c
         let d
-        
-        
-        let BOX={}//値はすべて-1
-        let NOW = Date.now();// 例: 1736508364000 (巨大な10進法の数値)
-        NOW=NOW/86400000
-        
-        const button = document.getElementById('btn');
-        const button2 = document.getElementById('btn2');
-        const textElement = document.getElementById('message');
-        const textElement2 = document.getElementById('message2');
-        
-        
-        button.onclick = () => alert(a);
-        button.addEventListener('click', () => {
-             key = c ;
-　　　　 });
-
-        button2.onclick = () => alert(b);
-        button2.addEventListener('click', () => {
-        key = d;
-        });
 
 
-        const fragment = document.createDocumentFragment();
-        for (let i = 0; i <= NUMBER-1; i++) {
+        function change() {
+          const fragment = document.createDocumentFragment();
+          for (let i = 0; i <= NUMBER-1; i++) {
             const li = document.createElement('h1');
             li.textContent = 0;
-            if (key == 0) {
-            　　　textElement.textContent = '種類別検索';
-            　　　textElement2.textContent = '期限切れ間近';
-            　　　a='種類別検索';
-            　　　b='期限切れ間近';
-            　　　c=1;
-            　　　d=2;
-            };
-            if (key == 1) {
-               textElement.textContent = '欠品表';
-               textElement2.textContent = '期限切れ間近';
-               a='欠品表';
-               b='期限切れ間近';
-               c=0;
-               d=2;
-            };
-            if (key == 2) {
-               textElement.textContent = '欠品表';
-               textElement2.textContent = '種類別検索';
-               b='種類別検索';
-               a='欠品表';
-               c=0;
-               d=1;
-            };
-
-
 
             
             if ( key==0 ) {
@@ -128,9 +82,82 @@
         　　if (li.textContent == 0) {
            　 li.textContent = "データ無し";
            　 fragment.appendChild(li);
+           }
+        　 document.getElementById('text').appendChild(fragment); // ここで一気に表示！
         }
-        　　document.getElementById('text').appendChild(fragment); // ここで一気に表示！
-        }
+    return  document.getElementById('text').appendChild(fragment);}
+        
+        
+    let BOX={}//値はすべて-1
+    let NOW = Date.now();// 例: 1736508364000 (巨大な10進法の数値)
+    NOW=NOW/86400000
+        
+    const button = document.getElementById('btn');
+    const button2 = document.getElementById('btn2');
+    const textElement = document.getElementById('message');
+    const textElement2 = document.getElementById('message2');
+        
+        
+    button.onclick = () => alert(a);
+    button.addEventListener('click', () => {
+    　       if (key == 0) {
+            　　　textElement.textContent = '種類別検索';
+            　　　textElement2.textContent = '期限切れ間近';
+            　　　a='種類別検索';
+            　　　b='期限切れ間近';
+            　　　c=1;
+            　　　d=2;
+            };
+            if (key == 1) {
+               textElement.textContent = '欠品表';
+               textElement2.textContent = '期限切れ間近';
+               a='欠品表';
+               b='期限切れ間近';
+               c=0;
+               d=2;
+            };
+            if (key == 2) {
+               textElement.textContent = '欠品表';
+               textElement2.textContent = '種類別検索';
+               b='種類別検索';
+               a='欠品表';
+               c=0;
+               d=1;
+            };
+            key = c ;
+            change();
+　　　　 });
+
+        button2.onclick = () => alert(b);
+        button2.addEventListener('click', () => {
+            if (key == 0) {
+            　　　textElement.textContent = '種類別検索';
+            　　　textElement2.textContent = '期限切れ間近';
+            　　　a='種類別検索';
+            　　　b='期限切れ間近';
+            　　　c=1;
+            　　　d=2;
+            };
+            if (key == 1) {
+               textElement.textContent = '欠品表';
+               textElement2.textContent = '期限切れ間近';
+               a='欠品表';
+               b='期限切れ間近';
+               c=0;
+               d=2;
+            };
+            if (key == 2) {
+               textElement.textContent = '欠品表';
+               textElement2.textContent = '種類別検索';
+               b='種類別検索';
+               a='欠品表';
+               c=0;
+               d=1;
+            };
+            key = d;
+            change();
+        });
+
     </script>
     
 </body>
