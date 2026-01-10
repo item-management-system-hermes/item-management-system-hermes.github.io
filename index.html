@@ -69,34 +69,40 @@
         for (let i = 0; i <= NUMBER-1; i++) {
             const li = document.createElement('h1');
             li.textContent = 0;
-            if (INDEX[i][0] == 1) {
+            if ( key==0 ) {
+             if (INDEX[i][0] == 1) {
                 if (BOX[INDEX[i][1]] == -1) {
                    BOX[INDEX[i][1]]==0
                 };
                 if (INDEX[i][3] != 0) {
                    BOX[INDEX[i][1]]+=INDEX[i][3];
                 };
-                if (i == NUMBER-1) {
+             };
+             if (i == NUMBER-1) {
                        for (let k = 0; k <= NUMBER-1; k++) {
                            if (BOX[ID[k]]==0) {
                                li.textContent =ID[k] ;
                                fragment.appendChild(li);
                            };
                        };
-                };
+             };
             };
             if (key == 1) {   　　
                if (INDEX[i][1] == NAME) {
+                   const fragment = document.createDocumentFragment();
+                   const li = document.createElement('h1');
                    li.textContent = INDEX[i];
                    fragment.appendChild(li);
-            }
-            }
+               };
+            };
             if (key == 2) {   　　
                if (INDEX[i][6]- NOW <= 3) {
+                   const fragment = document.createDocumentFragment();
+                   const li = document.createElement('h1');
                    li.textContent = INDEX[i];
                    fragment.appendChild(li);
-            }
-            } // ここではまだ画面は変わらない
+               };
+            }; // ここではまだ画面は変わらない
        
  }
         if (li.textContent == 0) {
