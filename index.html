@@ -17,7 +17,10 @@
     <p id="message"></p>
     <script>
         // ここに直接JavaScriptを書く
-        const btn = document.getElementById('btn2');
+        if (score >= 70) {
+            console.log('合格です！');
+}
+        const btn = document.getElementById('btn');
         btn.onclick = () => alert('動きました！');
         // 1. 要素を取得
         const textElement = document.getElementById('message');
