@@ -3,142 +3,19 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>食材管理アプリ</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; }
-        h1 { font-size: 1.2em; border-bottom: 1px solid #ccc; }
-        .item-box { margin: 5px 0; padding: 10px; background: #f0f0f0; border-radius: 4px; }
-        .alert { color: red; font-weight: bold; }
-    </style>
+    <title>ページのタイトル</title>
 </head>
 <body>
-    <label for="name">食材の種類検索：</label>
-    <input type="text" id="name" name="user_name" placeholder="例：肉">
-    
-    <h2>現在のモード: <span id="current-mode">欠品表</span></h2>
+    <label for="name">食材の種類：</label>
+    <input type="text" id="name" name="user_name" placeholder="例：ひらがなで">
+    <h1>こんにちは！</h1>
 
-    <p id="message"></p>
-    <button id="btn">モード切替 A</button>
-
+    <p id="message">HELLO</p>
+    <button id="btn">クリック</button>
     <p id="message2"></p>
-    <button id="btn2">モード切替 B</button>
-
-    <hr>
-    <div id="text"></div>
-
+    <button id="btn2">クリック</button>
+    <p id="text"></p>
     <script>
-        // ------------------------------
-        // 1. サンプルデータの作成 (ここがないと動きません)
-        // ------------------------------
-        // 構造: [お気に入り(0/1), 名前, 分類, 個数, 単位, 購入日, 消費期限]
-        const DATABASE = [
-            { fav: 1, name: "鶏肉", category: "肉", count: 0, unit: "パック", date: "2024-01-10", limit: "2026-01-12" },
-            { fav: 1, name: "人参", category: "野菜", count: 3, unit: "本", date: "2024-01-05", limit: "2026-01-20" },
-            { fav: 0, name: "牛乳", category: "その他", count: 1, unit: "本", date: "2024-01-11", limit: "2024-01-13" }, // 期限切れ間近の例
-            { fav: 1, name: "納豆", category: "その他", count: 0, unit: "パック", date: "2024-01-01", limit: "2024-01-15" }
-        ];
-
-        // ------------------------------
-        // 2. 変数の初期化
-        // ------------------------------
-        let currentKey = 0; // 0:欠品表, 1:種類検索, 2:期限切れ間近
-        const textContainer = document.getElementById('text');
-        const modeTitle = document.getElementById('current-mode');
-
-        // 日付計算用の現在時刻 (日単位)
-        const NOW = Date.now() / 86400000; 
-
-        // ------------------------------
-        // 3. 表示切り替え関数 (change関数をリライト)
-        // ------------------------------
-        function updateDisplay(key) {
-            // 表示エリアをクリア
-            textContainer.innerHTML = '';
-            const inputName = document.getElementById('name').value; // 入力欄の値
-
-            // データの数だけループ
-            DATABASE.forEach(item => {
-                let shouldDisplay = false;
-                let displayMessage = "";
-
-                // --- モードごとのロジック ---
-                
-                // Key 0: 欠品表 (お気に入りで、個数が0のもの)
-                if (key === 0) {
-                    if (item.fav === 1 && item.count === 0) {
-                        shouldDisplay = true;
-                        displayMessage = `【欠品】${item.name} を買い足してください`;
-                        modeTitle.textContent = "欠品表";
-                    }
-                }
-                
-                // Key 1: 種類別検索 (入力された文字とカテゴリまたは名前が一致)
-                else if (key === 1) {
-                    // 入力が空なら全表示、あれば一致判定
-                    if (inputName === "" || item.category.includes(inputName) || item.name.includes(inputName)) {
-                        shouldDisplay = true;
-                        displayMessage = `【在庫】${item.name} (${item.category}): ${item.count}${item.unit}`;
-                        modeTitle.textContent = "種類別検索";
-                    }
-                }
-
-                // Key 2: 期限切れ間近 (消費期限 - 現在 <= 3日)
-                else if (key === 2) {
-                    const limitDate = new Date(item.limit).getTime() / 86400000;
-                    const diff = limitDate - NOW;
-                    
-                    if (diff <= 3) { // 3日以内 (マイナスなら期限切れ)
-                        shouldDisplay = true;
-                        const status = diff < 0 ? "期限切れ" : `あと ${Math.floor(diff)}日`;
-                        displayMessage = `【${status}】${item.name} (期限: ${item.limit})`;
-                        modeTitle.textContent = "期限切れ間近";
-                    }
-                }
-
-                // --- 画面への追加処理 ---
-                if (shouldDisplay) {
-                    const div = document.createElement('div');
-                    div.className = 'item-box';
-                    if(key === 2) div.classList.add('alert'); // 期限切れは赤字っぽく
-                    div.textContent = displayMessage;
-                    textContainer.appendChild(div);
-                }
-            });
-
-            // 表示するものがなかった場合
-            if (textContainer.innerHTML === '') {
-                textContainer.textContent = "該当するデータはありません";
-            }
-        }
-
-        // ------------------------------
-        // 4. ボタン操作
-        // ------------------------------
-        const button = document.getElementById('btn');
-        const button2 = document.getElementById('btn2');
-        const msg1 = document.getElementById('message');
-        const msg2 = document.getElementById('message2');
-
-        // ボタンのラベル初期設定
-        msg1.textContent = "種類別検索へ";
-        msg2.textContent = "期限切れチェックへ";
-
-        // ボタン1: モードを順繰りに変える、あるいは特定モードへ
-        button.addEventListener('click', () => {
-            currentKey = 1; // 種類検索モードへ
-            updateDisplay(currentKey);
-            alert("種類別検索モードに切り替えました");
-        });
-
-        // ボタン2: 期限切れモードへ
-        button2.addEventListener('click', () => {
-            currentKey = 2; // 期限切れモードへ
-            updateDisplay(currentKey);
-            alert("期限切れチェックモードに切り替えました");
-        });
-        
-        // 初期表示 (欠品表)
-        updateDisplay(0);
 
     </script>
 </body>
