@@ -10,27 +10,26 @@
     <input type="text" id="name" name="user_name" placeholder="例：ひらがなで">
     <h1>こんにちは！</h1>
 
-    <p id="message">HI</p>
+    <p id="message">H</p>
     <button id="btn">クリック</button>
     <p id="message2"></p>
     <button id="btn2">クリック</button>
     <p id="text"></p>
     <script>
-        function change() {
+        function change(const A,const B,const C) {
            const fragment = document.createDocumentFragment();
-           const li = document.createElement('h1');
-           li.textContent = "データ無し";
+           const li = document.createElement(B);
+           li.textContent = C;
            fragment.appendChild(li);
-           document.getElementById('text').appendChild(fragment);
+           document.getElementById(A).appendChild(fragment);
         }
         
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
-        const textElement = document.getElementById('message');
-        const textElement2 = document.getElementById('message2');
+        const button3 = document.getElementById('btn3');
         button.onclick = () => alert("a");
         button.addEventListener('click', () => {
-        change();})
+        change("text","h1","データ無し");})
     </script>
 </body>
 </html>
