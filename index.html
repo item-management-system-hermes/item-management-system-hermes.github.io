@@ -10,10 +10,12 @@
     <input type="text" id="name" name="user_name" placeholder="例：ひらがなで">
     <h1>こんにちは！</h1>
 
-    <p id="message">H</p>
+    <p id="message">欠品表</p>
     <button id="btn">クリック</button>
-    <p id="message2"></p>
+    <p id="message2">検索</p>
     <button id="btn2">クリック</button>
+    <p id="message3">消費期限間近</p>
+    <button id="btn3">クリック</button>
     <p id="text"></p>
     <script>
         function change(A,B,C) {
@@ -23,9 +25,13 @@
            fragment.appendChild(li);
            document.getElementById(A).appendChild(fragment);
         }
+        function K() {
+            ;
+        }
         
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
+        const button3 = document.getElementById('btn3');
         button.onclick = () => alert("a");
         button.addEventListener('click', () => {
         change("text","h1","データ無し");})
