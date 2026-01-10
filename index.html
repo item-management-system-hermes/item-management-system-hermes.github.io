@@ -42,6 +42,17 @@
         const button2 = document.getElementById('btn2');
         const textElement = document.getElementById('message');
         const textElement2 = document.getElementById('message2');
+        
+        
+        button.onclick = () => alert(a);
+        button.addEventListener('click', () => {
+             key = c ;
+　　　　 });
+
+        button2.onclick = () => alert(b);
+        button2.addEventListener('click', () => {
+        key = d;
+        });
 
 
         const fragment = document.createDocumentFragment();
@@ -72,16 +83,6 @@
                c=0;
                d=1;
             };
-        
-            button.onclick = () => alert(a);
-            button.addEventListener('click', () => {
-            key = c ;
-　　　　　    });
-
-            button2.onclick = () => alert(b);
-            button2.addEventListener('click', () => {
-            key = d;
-            });
 
 
 
