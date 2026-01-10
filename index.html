@@ -18,9 +18,10 @@
     <script>
         function change() {
            const fragment = document.createDocumentFragment();
+           const li = document.createElement('h1');
            li.textContent = "データ無し";
            fragment.appendChild(li);
-        　 document.getElementById('text').appendChild(fragment);
+           document.getElementById('text').appendChild(fragment);
         }
         
         const button = document.getElementById('btn');
@@ -29,7 +30,7 @@
         const textElement2 = document.getElementById('message2');
         button.onclick = () => alert("a");
         button.addEventListener('click', () => {
-        change();}
+        change());}
     </script>
 </body>
 </html>
