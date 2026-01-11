@@ -30,14 +30,6 @@
         const fragment = document.createDocumentFragment();
             for (i=0; i<=N-1; i++){
                     change(fragment,"h1",FN[F[i]],0);
-                    const I;
-                    change(fragment,"button","お気に入り解除",I);
-                    const  E= document.getElementById(I);
-                    E.onclick = () => alert(FN[F[i]]+"解除完了");
-                    E.addEventListener('click', () => {
-                        N=N-1;
-                        delete FN.F[i]
-                        F.splice(i, 1);
                     })
             }
         document.getElementById("text").appendChild(fragment);
