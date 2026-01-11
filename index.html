@@ -18,7 +18,7 @@
     <button id="btn3">クリック</button>
     <p id="text"></p>
     <script>
-        function K(N,F,FN) {
+        function M(N,F,FN) {
         const fragment = document.createDocumentFragment();
             for (let i=0; i<=N-1; i++){
                 const li = document.createElement("h1");
@@ -27,21 +27,45 @@
                     }
         document.getElementById("text").appendChild(fragment);
         }
+        function D(N,DB,now) {
+        const fragment = document.createDocumentFragment();
+            for (let i=0; i<=N-1; i++){
+                if ( DB[i][4]-now <= 3 ){
+                    const li = document.createElement("h1");
+           　　　    li.textContent = DB[i];
+           　　　    fragment.appendChild(li);
+                }    
+            }
+        document.getElementById("text").appendChild(fragment);
+        }
 
 
-        let DATABASE=[[111,1,1,"パック",,]]
+        let DATABASE=[[111,1,1,"パック",20462]]
         let NUM=1
         let FAV=[112]
         let FNUM=1
         let FNAME={112:"豚肉"}
+        let NOW = Date.now();// 例: 1736508364000 (巨大な10進法の数値)
+        NOW=NOW/86400000
         
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
         const button3 = document.getElementById('btn3');
+        
         button.addEventListener('click', () => {
-        alert("a")
-        document.getElementById("text").innerHTML = "";
-        K(FNUM,FAV,FNAME);//NはFの個数、
+            alert("欠品表")
+            document.getElementById("text").innerHTML = "";
+            M(FNUM,FAV,FNAME);//NはFの個数、
+        })
+        button2.addEventListener('click', () => {
+            alert("検索")
+            document.getElementById("text").innerHTML = "";
+            M(FNUM,FAV,FNAME);//NはFの個数、
+        })
+        button3.addEventListener('click', () => {
+            alert("期限間近")
+            document.getElementById("text").innerHTML = "";
+            D(NUM,DATABASE,NOW);//NはFの個数、
         })
     </script>
 </body>
