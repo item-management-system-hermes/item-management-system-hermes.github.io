@@ -45,7 +45,6 @@
                           document.getElementById("text").innerHTML = "";
                           S(CATEn,CATEd,CATEl,j);//NはFの個数、
                        })
-                       }
                        if (d[Y] == undefined){
                            s=1;
                            li.textContent = "以上";
@@ -55,10 +54,11 @@
                             alert(j+"分類");
                             document.getElementById("text").innerHTML = "";
                             S(CATEn,CATEd,CATEl,j);//NはFの個数、
-                       })
+                           })}
                        fragment.appendChild(li); 
                        fragment.appendChild(cl); 
-                   }
+                    
+                    }
                 }
             }
         document.getElementById("text").appendChild(fragment);
