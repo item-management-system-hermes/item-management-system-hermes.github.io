@@ -3,199 +3,112 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>食材管理アプリ</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; }
-        h3 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-        .item-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border: 1px solid #eee; padding: 10px; }
-        button { cursor: pointer; padding: 5px 10px; }
-        .category-btn { margin-left: 10px; }
-    </style>
+    <title>ページのタイトル</title>
 </head>
 <body>
     <label for="name">食材の種類：</label>
     <input type="text" id="name" name="user_name" placeholder="例：ひらがなで">
-    
     <h1>こんにちは！</h1>
 
-    <p id="message">▼ 欠品しているもの</p>
-    <button id="btn">欠品表を表示</button>
-
-    <p id="message2">▼ カテゴリ検索</p>
-    <button id="btn2">検索開始</button>
-
-    <p id="message3">▼ 消費期限間近 (残り3日以内)</p>
-    <button id="btn3">期限チェック</button>
-
-    <hr>
-    <div id="text"></div>
-
+    <p id="message">欠品表</p>
+    <button id="btn">クリック</button>
+    <p id="message2">検索</p>
+    <button id="btn2">クリック</button>
+    <p id="message3">消費期限間近</p>
+    <button id="btn3">クリック</button>
+    <p id="text"></p>
     <script>
-        // --- データ定義 ---
-        // DB構造: [ID, 予備, 予備, 単位, 期限(1970/1/1からの日数)]
-        // 例: 20468 = 2026年1月12日頃
-        let DATABASE = [
-            [111, 1, 1, "パック", 20468], 
-            [111, 1, 1, "パック", 20467], 
-            [113, 1, 1, "パック", 20468],
-            [112, 1, 1, "パック", 19000] // 期限切れのテストデータ
-        ];
-        
-        let FAV = [112]; // 欠品リスト(ID)
-        let FNUM = 1;    // 欠品数
-        
-        // カテゴリ定義 (キーは数値)
-        let CATEd = {
-            1: "短期", 2: "長期", 3: "保存食", 
-            11: "肉", 12: "野菜", 13: "その他", 
-            21: "調味料", 22: "麺", 23: "粉・乾物", 24: "お菓子", 25: "冷凍食品", 26: "その他", 
-            31: "缶詰・瓶詰め", 32: "レトルト", 33: "インスタント", 34: "主食", 35: "水", 36: "他"
-        };
-        
-        let NAME = {111: "鳥肉", 112: "豚肉", 113: "牛肉"};
-        
-        // 今日の日付（1970/1/1からの日数）
-        let NOW = Math.floor(Date.now() / 86400000);
-
-        // --- DOM要素 ---
-        const textDiv = document.getElementById("text");
-
-        // --- 関数定義 ---
-
-        // 1. 欠品表表示 (M)
-        function M(list, nameDB) {
-            textDiv.innerHTML = "<h3>欠品リスト</h3>";
-            const fragment = document.createDocumentFragment();
-            
-            // listは配列(FAV)を想定
-            for (let i = 0; i < list.length; i++) {
-                const div = document.createElement("div");
-                div.className = "item-row";
-                // 名前が存在すれば表示、なければIDを表示
-                div.textContent = nameDB[list[i]] ? nameDB[list[i]] : "ID:" + list[i];
-                fragment.appendChild(div);
-            }
-            textDiv.appendChild(fragment);
+        function M(N,F,FN) {
+        const fragment = document.createDocumentFragment();
+            for (let i=0; i<=N-1; i++){
+                const li = document.createElement("h1");
+                li.textContent = FN[F[i]];
+                fragment.appendChild(li);
+                    }
+        document.getElementById("text").appendChild(fragment);
         }
-
-        // 2. カテゴリ検索 (S)
-        // currentLayer: 現在の階層 (0:ルート, 1:短期, 11:肉...)
-        function S(categoryDB, currentLayer) {
-            textDiv.innerHTML = ""; // クリア
-            const title = document.createElement("h3");
-            title.textContent = (currentLayer === 0) ? "カテゴリ選択" : "詳細分類: " + currentLayer;
-            textDiv.appendChild(title);
-
-            const fragment = document.createDocumentFragment();
-            let hasChild = false;
-
-            // カテゴリDBを全走査して、現在の子要素を探す
-            for (let key in categoryDB) {
-                key = Number(key);
-                let isChild = false;
-
-                if (currentLayer === 0) {
-                    // ルートの場合、1桁のキー(1-9)を探す
-                    if (key > 0 && key < 10) isChild = true;
-                } else {
-                    // サブカテゴリの場合、親ID * 10 したもの ～ +9 の範囲を探す
-                    // 例: 親が1なら、10～19を探す
-                    let min = currentLayer * 10;
-                    let max = min + 9;
-                    if (key >= min && key <= max) isChild = true;
-                }
-
-                if (isChild) {
-                    hasChild = true;
-                    const div = document.createElement("div");
-                    div.className = "item-row";
-                    
-                    const span = document.createElement("span");
-                    span.textContent = categoryDB[key];
-                    
-                    const btn = document.createElement("button");
-                    btn.textContent = "選択";
-                    btn.className = "category-btn";
-                    btn.addEventListener('click', () => {
-                        // さらに下層へ潜る再帰呼び出し
-                        S(categoryDB, key);
-                    });
-
-                    div.appendChild(span);
-                    div.appendChild(btn);
-                    fragment.appendChild(div);
+        function S(n,d,l,y) {
+        const fragment = document.createDocumentFragment();
+            for (let i=0; i<=n-1; i++){
+                if ( l[i]  == y){
+                   i=n;
+                   let s=0 
+                   for (let k=1; s==0; k++){
+                       let Y=y+k;
+                       const li = document.createElement("h1");
+                       const cl = document.createElement("button");
+                       li.textContent = d[Y];
+                       cl.textContent = "下位分類に入る";
+                       cl.addEventListener('click', () => {
+                          let j=Y*10;
+                          alert(j+"分類");
+                          document.getElementById("text").innerHTML = "";
+                          S(CATEn,CATEd,CATEl,j);//NはFの個数、
+                       })
+                       }
+                       if (d[Y] == undefined){
+                           s=1;
+                           li.textContent = "以上";
+                           cl.textContent = "上位分類に戻る";
+                           cl.addEventListener('click', () => {
+                            let j=~~(y/10);
+                            alert(j+"分類");
+                            document.getElementById("text").innerHTML = "";
+                            S(CATEn,CATEd,CATEl,j);//NはFの個数、
+                       })
+                       fragment.appendChild(li); 
+                       fragment.appendChild(cl); 
+                   }
                 }
             }
-
-            // 下層がない、または戻るボタン用
-            if (currentLayer !== 0) {
-                const backBtn = document.createElement("button");
-                backBtn.textContent = "上位分類に戻る";
-                backBtn.style.marginTop = "20px";
-                backBtn.addEventListener('click', () => {
-                    let parent = Math.floor(currentLayer / 10);
-                    S(categoryDB, parent);
-                });
-                fragment.appendChild(backBtn);
-            } else if (!hasChild) {
-                const p = document.createElement("p");
-                p.textContent = "カテゴリが見つかりません";
-                fragment.appendChild(p);
+        document.getElementById("text").appendChild(fragment);
+        }
+        function D(N,DB,now,fn) {
+        const fragment = document.createDocumentFragment();
+            for (let i=0; i<=N-1; i++){
+                let LIMIT=DB[i][4]-now;
+                if ( LIMIT <= 3 ){
+                    const li = document.createElement("h1");
+                    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+DB[i][4];
+                    fragment.appendChild(li);
+                }    
             }
-
-            textDiv.appendChild(fragment);
+        document.getElementById("text").appendChild(fragment);
         }
 
-        // 3. 期限切れ・間近チェック (D)
-        function D(dbData, now, nameDB) {
-            textDiv.innerHTML = "<h3>消費期限間近・切れ</h3>";
-            const fragment = document.createDocumentFragment();
-            let count = 0;
 
-            for (let i = 0; i < dbData.length; i++) {
-                let limitDay = dbData[i][4];
-                let diff = limitDay - now; // 残り日数
-
-                // 残り3日以内 (マイナスは期限切れ)
-                if (diff <= 3) {
-                    count++;
-                    const div = document.createElement("div");
-                    div.className = "item-row";
-                    
-                    let itemName = nameDB[dbData[i][0]] || "不明な食材";
-                    let status = diff < 0 ? "【期限切れ】" : "あと " + diff + "日";
-                    
-                    // スタイル変更（期限切れは赤字など）
-                    if(diff < 0) div.style.color = "red";
-
-                    div.textContent = `${itemName} [${dbData[i][3]}] : ${status}`;
-                    fragment.appendChild(div);
-                }
-            }
-            
-            if(count === 0) {
-                const p = document.createElement("p");
-                p.textContent = "期限間近の食材はありません。";
-                fragment.appendChild(p);
-            }
-
-            textDiv.appendChild(fragment);
-        }
-
-        // --- イベントリスナー設定 ---
+        let DATABASE=[[111,1,1,"パック",20468],[111,1,1,"パック",20467],[113,1,1,"パック",20468],]
+        let NUM=3
+        let FAV=[112]
+        let FNUM=1
+        let CATEn=19
+        let CATEd={1:"短期",2:"長期",3:"保存食",11:"肉",12:"野菜",13:"その他",21:"調味料",22:"麺",23:"粉・乾物",24:"お菓子",25:"冷凍食品",26:"その他",31:"缶詰・瓶詰め",32:"レトルト",33:"インスタント",34:"主食",35:"水",36:"他"}
+        let CATEl=[0,10,20,30,110,120,130,210,220,230,240,250,260,310,320,330,340,350,360]
+        let X=0
+        let NAME={111:"鳥肉",112:"豚肉",113:"牛肉"}
+        let NOW = Date.now();
+        NOW=Number(NOW)
+        NOW=Math.floor(NOW / 86400000);
         
-        document.getElementById('btn').addEventListener('click', () => {
-            M(FAV, NAME);
-        });
-
-        document.getElementById('btn2').addEventListener('click', () => {
-            S(CATEd, 0); // 0からスタート
-        });
-
-        document.getElementById('btn3').addEventListener('click', () => {
-            D(DATABASE, NOW, NAME);
-        });
-
+        const button = document.getElementById('btn');
+        const button2 = document.getElementById('btn2');
+        const button3 = document.getElementById('btn3');
+        
+        button.addEventListener('click', () => {
+            alert("欠品表")
+            document.getElementById("text").innerHTML = "";
+            M(FNUM,FAV,NAME);//NはFの個数、
+        })
+        button2.addEventListener('click', () => {
+            alert("検索")
+            document.getElementById("text").innerHTML = "";
+            S(CATEn,CATEd,CATEl,X);//NはFの個数、
+        })
+        button3.addEventListener('click', () => {
+            alert("期限間近")
+            document.getElementById("text").innerHTML = "";
+            D(NUM,DATABASE,NOW,NAME);
+        })
     </script>
 </body>
 </html>
