@@ -27,6 +27,17 @@
                     }
         document.getElementById("text").appendChild(fragment);
         }
+        function S(N,DB,now,fn) {
+        const fragment = document.createDocumentFragment();
+            for (let i=0; i<=N-1; i++){
+                let LIMIT=DB[i][4]-now
+                const li = document.createElement("h1");
+           　　　li.textContent = LIMIT;
+           　　　fragment.appendChild(li);
+                }    
+            }
+        document.getElementById("text").appendChild(fragment);
+        }
         function D(N,DB,now,fn) {
         const fragment = document.createDocumentFragment();
             for (let i=0; i<=N-1; i++){
@@ -61,7 +72,7 @@
         button2.addEventListener('click', () => {
             alert("検索")
             document.getElementById("text").innerHTML = "";
-            M(FNUM,FAV,NAME);//NはFの個数、
+            S(FNUM,FAV,NAME);//NはFの個数、
         })
         button3.addEventListener('click', () => {
             alert("期限間近")
