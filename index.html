@@ -17,15 +17,14 @@
     <p id="message3">消費期限間近</p>
     <button id="btn3">クリック</button>
     <p id="text"></p>
-    <script>}
+    <script>
         function K(N,F,FN) {
         const fragment = document.createDocumentFragment();
             for (i=0; i<=N-1; i++){
-                const li = document.createElement(h1);
+                const li = document.createElement("h1");
            　　　li.textContent = FN[F[i]];
-           　　　A.appendChild(li);
+           　　　fragment.appendChild(li);
                     }
-            }
         document.getElementById("text").appendChild(fragment);
         }
 
