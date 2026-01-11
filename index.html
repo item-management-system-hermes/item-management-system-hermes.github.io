@@ -30,9 +30,10 @@
         function D(N,DB,now,fn) {
         const fragment = document.createDocumentFragment();
             for (let i=0; i<=N-1; i++){
-                if ( DB[i][4]-now <= 3 ){
+                let LIMIT=DB[i][4]-now
+                if ( LIMIT <= 3 ){
                     const li = document.createElement("h1");
-           　　　    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+DB[i][4]+String(DB[i][4]-now);
+           　　　    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+DB[i][4]+String(LIMIT);
            　　　    fragment.appendChild(li);
                 }    
             }
