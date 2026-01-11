@@ -27,12 +27,12 @@
                     }
         document.getElementById("text").appendChild(fragment);
         }
-        function D(N,DB,now) {
+        function D(N,DB,now,fn) {
         const fragment = document.createDocumentFragment();
             for (let i=0; i<=N-1; i++){
                 if ( DB[i][4]-now <= 3 ){
                     const li = document.createElement("h1");
-           　　　    li.textContent = DB[i];
+           　　　    li.textContent = fn[DB[i][1]]+"|"+DB[i][2]+":"+DB[i][3]+"|"+DB[i][4];
            　　　    fragment.appendChild(li);
                 }    
             }
@@ -40,7 +40,7 @@
         }
 
 
-        let DATABASE=[[111,1,1,"パック",20462]]
+        let DATABASE=[[111,1,1,"パック",20463]]
         let NUM=1
         let FAV=[112]
         let FNUM=1
@@ -65,7 +65,7 @@
         button3.addEventListener('click', () => {
             alert("期限間近")
             document.getElementById("text").innerHTML = "";
-            D(NUM,DATABASE,NOW);//NはFの個数、
+            D(NUM,DATABASE,NOW,FNAME);//NはFの個数、
         })
     </script>
 </body>
