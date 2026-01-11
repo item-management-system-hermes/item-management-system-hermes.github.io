@@ -18,20 +18,28 @@
     <button id="btn3">クリック</button>
     <p id="text"></p>
     <script>
-        function change(A,B,C) {
+        function change(A,B,C,D) {
            const li = document.createElement(B);
+           if (D!=0){
+               li.id = D;
+           }
            li.textContent = C;
            A.appendChild(li);;
         }
-        function K(D,N,F,FN) {
+        function K(N,F,FN) {
         const fragment = document.createDocumentFragment();
             for (i=0 i<=N-1 i++){
-                if (FN[F[i]]==0){
-                    change(fragment,"h1",D);
-                    change(fragment,"button","お気に入り解除");
-                        
-                    }
-                }
+                    change(fragment,"h1",FN[F[i]],0);
+                    let I=String(i)
+                    change(fragment,"button","お気に入り解除",I);
+                    let E=String(i*-1)
+                    const  E= document.getElementById(I);
+                    E.onclick = () => alert(FN[F[i]]+"解除完了");
+                    E.addEventListener('click', () => {
+                        N=N-1;
+                        delete FN.F[i]
+                        F.splice(i, 1);
+                    })
             }
         document.getElementById("text").appendChild(fragment);
         }
@@ -41,14 +49,16 @@
 
         let DATABASE=[[111,1,1,"パック",,]]
         let NUM=1
-        let FAV=[111]
+        let FAV=[112]
+        let FNUM=1
+        let FNAME={112;"豚肉"}
         
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
         const button3 = document.getElementById('btn3');
         button.onclick = () => alert("a");
         button.addEventListener('click', () => {
-        K(DATABASE,N,F,FNAME);//NはFの個数、
+        K(FNUM,FAV,FNAME);//NはFの個数、
         })
     </script>
 </body>
