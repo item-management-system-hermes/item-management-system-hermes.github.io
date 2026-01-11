@@ -20,7 +20,7 @@
     <script>
         function K(N,F,FN) {
         const fragment = document.createDocumentFragment();
-            for (i=0; i<=N-1; i++){
+            for (let i=0; i<=N-1; i++){
                 const li = document.createElement("h1");
            　　　li.textContent = FN[F[i]];
            　　　fragment.appendChild(li);
@@ -38,8 +38,8 @@
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
         const button3 = document.getElementById('btn3');
-        button.onclick = () => alert("a");
         button.addEventListener('click', () => {
+        alert("a")
         document.getElementById("text").innerHTML = "";
         K(FNUM,FAV,FNAME);//NはFの個数、
         })
