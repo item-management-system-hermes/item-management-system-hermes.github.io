@@ -39,12 +39,13 @@
                        const cl = document.createElement("button");
                        li.textContent = d[Y];
                        cl.textContent = "下位分類に入る";
-                       cl.addEventListener('click', () => {
+                       if (d[Y] != undefined){
+                        cl.addEventListener('click', () => {
                           let j=Y*10;
                           alert(j+"分類");
                           document.getElementById("text").innerHTML = "";
                           S(CATEn,CATEd,CATEl,j);//NはFの個数、
-                       })
+                       })}
                        if (d[Y] == undefined){
                            s=1;
                            li.textContent = "以上";
