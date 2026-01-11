@@ -3,63 +3,69 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>ページのタイトル</title>
+    <title>欠品管理</title>
 </head>
 <body>
     <label for="name">食材の種類：</label>
     <input type="text" id="name" name="user_name" placeholder="例：ひらがなで">
     <h1>こんにちは！</h1>
 
-    <p id="message">欠品表</p>
-    <button id="btn">クリック</button>
-    <p id="message2">検索</p>
-    <button id="btn2">クリック</button>
-    <p id="message3">消費期限間近</p>
-    <button id="btn3">クリック</button>
-    <p id="text"></p>
+    <p id="message">お気に入り一覧</p>
+    <button id="btn">リスト表示</button>
+    <div id="text"></div>
+
     <script>
-        function change(A,B,C,D) {
-           const li = document.createElement(B);
-           if (D!=0){
-               li.id = D;
+        // 要素を追加する汎用関数
+        function change(parent, tag, text, id) {
+           const element = document.createElement(tag);
+           if (id !== 0) {
+               element.id = id;
            }
-           li.textContent = C;
-           A.appendChild(li);;
+           element.textContent = text;
+           parent.appendChild(element);
+           return element; // 作成した要素を返すように変更
         }
-        function K(N,F,FN) {
-        const fragment = document.createDocumentFragment();
-            for (i=0 i<=N-1 i++){
-                    change(fragment,"h1",FN[F[i]],0);
-                    let I=String(i)
-                    change(fragment,"button","お気に入り解除",I);
-                    let E=String(i*-1)
-                    const  E= document.getElementById(I);
-                    E.onclick = () => alert(FN[F[i]]+"解除完了");
-                    E.addEventListener('click', () => {
-                        N=N-1;
-                        delete FN.F[i]
-                        F.splice(i, 1);
-                    })
+
+        // リストを表示する関数
+        function K(N, F, FN) {
+            const displayArea = document.getElementById("text");
+            displayArea.innerHTML = ""; // 二重表示を防ぐために一度空にする
+            
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < F.length; i++) {
+                const itemId = F[i]; // 112など
+                const itemName = FN[itemId];
+
+                // 名前を表示
+                change(fragment, "h3", itemName, 0);
+
+                // 解除ボタンを作成
+                const removeBtn = change(fragment, "button", "お気に入り解除", "btn-" + itemId);
+
+                // ボタンを押した時の処理
+                removeBtn.onclick = () => {
+                    alert(itemName + " 解除完了");
+                    
+                    // 1. データから削除
+                    delete FN[itemId];      // オブジェクトから削除
+                    F.splice(i, 1);        // 配列から削除
+                    
+                    // 2. 画面を再描画（自分自身をもう一度呼ぶ）
+                    K(F.length, F, FN);
+                };
             }
-        document.getElementById("text").appendChild(fragment);
-        }
-        function K() {
+            displayArea.appendChild(fragment);
         }
 
-
-        let DATABASE=[[111,1,1,"パック",,]]
-        let NUM=1
-        let FAV=[112]
-        let FNUM=1
-        let FNAME={112;"豚肉"}
+        // データ定義
+        let FAV = [112];
+        let FNAME = {112: "豚肉"};
         
         const button = document.getElementById('btn');
-        const button2 = document.getElementById('btn2');
-        const button3 = document.getElementById('btn3');
-        button.onclick = () => alert("a");
         button.addEventListener('click', () => {
-        K(FNUM,FAV,FNAME);//NはFの個数、
-        })
+            K(FAV.length, FAV, FNAME);
+        });
     </script>
 </body>
 </html>
