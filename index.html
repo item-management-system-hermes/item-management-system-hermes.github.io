@@ -1,51 +1,115 @@
-function S(n, d, l, y) {
-    const fragment = document.createDocumentFragment();
-    const target = document.getElementById("text");
-    target.innerHTML = ""; // 前の表示を消す
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>食材管理アプリ</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .item-card { border-bottom: 1px solid #ccc; padding: 10px; }
+        button { margin: 5px; padding: 8px; cursor: pointer; }
+        #text { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <label for="name">食材の種類：</label>
+    <input type="text" id="name" name="user_name" placeholder="例：ひらがなで">
+    <h1>食材管理システム</h1>
 
-    for (let i = 0; i <= n - 1; i++) {
-        if (l[i] == y) {
-            let s = 0;
-            // yの子要素（y+1, y+2...）を探して表示するループ
-            for (let k = 1; s == 0; k++) {
-                let Y = y + k;
-                
-                if (d[Y] !== undefined) {
-                    // 子要素が見つかった場合
-                    const li = document.createElement("h1");
-                    const cl = document.createElement("button");
-                    li.textContent = d[Y];
-                    cl.textContent = "下位分類に入る";
-                    
-                    cl.addEventListener('click', () => {
-                        let j = Y * 10;
-                        alert(j + "分類");
-                        S(CATEn, CATEd, CATEl, j);
-                    });
-                    
-                    fragment.appendChild(li);
-                    fragment.appendChild(cl);
-                } else {
-                    // これ以上子要素がない場合（定義されていないIDに当たった時）
-                    s = 1; 
-                    const li = document.createElement("h1");
-                    const cl = document.createElement("button");
-                    li.textContent = "以上";
-                    cl.textContent = "上位分類に戻る";
-                    
-                    cl.addEventListener('click', () => {
-                        // 110 -> 11, 11 -> 1, 1 -> 0 に戻す
-                        let j = (y >= 100) ? Math.floor(y / 100) * 10 : 0;
-                        alert(j + "分類に戻る");
-                        S(CATEn, CATEd, CATEl, j);
-                    });
-                    
-                    fragment.appendChild(li);
-                    fragment.appendChild(cl);
+    <button id="btn">欠品表</button>
+    <button id="btn2">カテゴリー検索</button>
+    <button id="btn3">消費期限間近</button>
+
+    <div id="text"></div>
+
+    <script>
+        // データ定義
+        let DATABASE = [[111, 1, 1, "パック", 20468], [111, 1, 1, "パック", 20467], [113, 1, 1, "パック", 20468]];
+        let NUM = 3;
+        let FAV = [112];
+        let FNUM = 1;
+        let CATEn = 19;
+        let CATEd = { 1: "短期", 2: "長期", 3: "保存食", 11: "肉", 12: "野菜", 13: "その他", 21: "調味料", 22: "麺", 23: "粉・乾物", 24: "お菓子", 25: "冷凍食品", 26: "その他", 31: "缶詰・瓶詰め", 32: "レトルト", 33: "インスタント", 34: "主食", 35: "水", 36: "他" };
+        let CATEl = [0, 10, 20, 30, 110, 120, 130, 210, 220, 230, 240, 250, 260, 310, 320, 330, 340, 350, 360];
+        let NAME = { 111: "鳥肉", 112: "豚肉", 113: "牛肉" };
+        let X = 0; // ルートカテゴリー
+
+        // 今日を基点とした日数
+        let NOW = Math.floor(Date.now() / 86400000);
+
+        // --- 機能関数 ---
+
+        // M: 欠品表示 (お気に入り)
+        function M(N, F, FN) {
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < N; i++) {
+                const li = document.createElement("h2");
+                li.textContent = "欠品中: " + (FN[F[i]] || "不明な食材");
+                fragment.appendChild(li);
+            }
+            document.getElementById("text").appendChild(fragment);
+        }
+
+        // S: カテゴリー検索
+        function S(n, d, l, y) {
+            const container = document.getElementById("text");
+            container.innerHTML = ""; // 初期化
+            const fragment = document.createDocumentFragment();
+
+            // カテゴリーリストを走査
+            for (let i = 0; i < n; i++) {
+                if (l[i] === y) {
+                    // 子要素（y+1, y+2...）を探す
+                    for (let k = 1; ; k++) {
+                        let Y = y + k;
+                        if (d[Y] === undefined) break; // 見つからなくなったら終了
+
+                        const li = document.createElement("h2");
+                        const cl = document.createElement("button");
+                        li.textContent = d[Y];
+                        cl.textContent = "下位分類に入る";
+                        cl.onclick = () => {
+                            let nextLevel = Y * 10;
+                            S(CATEn, CATEd, CATEl, nextLevel);
+                        };
+                        fragment.appendChild(li);
+                        fragment.appendChild(cl);
+                    }
+                    break;
                 }
             }
-            break; // 対象の y を処理したら外側のループを抜ける
+
+            // 上位に戻るボタン
+            if (y !== 0) {
+                const backBtn = document.createElement("button");
+                backBtn.textContent = "上位分類に戻る";
+                backBtn.onclick = () => {
+                    let prevLevel = Math.floor(y / 10);
+                    S(CATEn, CATEd, CATEl, prevLevel);
+                };
+                fragment.appendChild(document.createElement("br"));
+                fragment.appendChild(backBtn);
+            }
+
+            container.appendChild(fragment);
         }
-    }
-    target.appendChild(fragment);
-}
+
+        // D: 消費期限チェック
+        function D(N, DB, now, fn) {
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < N; i++) {
+                let limitDate = DB[i][4];
+                let diff = limitDate - now;
+                if (diff <= 3) {
+                    const li = document.createElement("h2");
+                    li.textContent = `${fn[DB[i][0]]} [${DB[i][1]}] : ${DB[i][2]}${DB[i][3]} | 残り ${diff} 日`;
+                    fragment.appendChild(li);
+                }
+            }
+            document.getElementById("text").appendChild(fragment);
+        }
+
+        // --- イベント登録 ---
+
+        document.getElementById('btn').onclick = () => {
+            document.getElementById("text").innerHTML = "";
