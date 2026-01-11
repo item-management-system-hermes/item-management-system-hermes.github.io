@@ -44,7 +44,7 @@
         let NUM=1
         let FAV=[112]
         let FNUM=1
-        let FNAME={112:"豚肉"}
+        let NAME={111:"鳥肉",112:"豚肉"}
         let NOW = Date.now();// 例: 1736508364000 (巨大な10進法の数値)
         NOW=NOW/86400000
         
@@ -55,17 +55,17 @@
         button.addEventListener('click', () => {
             alert("欠品表")
             document.getElementById("text").innerHTML = "";
-            M(FNUM,FAV,FNAME);//NはFの個数、
+            M(FNUM,FAV,NAME);//NはFの個数、
         })
         button2.addEventListener('click', () => {
             alert("検索")
             document.getElementById("text").innerHTML = "";
-            M(FNUM,FAV,FNAME);//NはFの個数、
+            M(FNUM,FAV,NAME);//NはFの個数、
         })
         button3.addEventListener('click', () => {
             alert("期限間近")
             document.getElementById("text").innerHTML = "";
-            D(NUM,DATABASE,NOW,FNAME);//NはFの個数、
+            D(NUM,DATABASE,NOW,NAME);//NはFの個数、
         })
     </script>
 </body>
