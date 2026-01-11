@@ -33,8 +33,7 @@
                 let LIMIT=DB[i][4]-now
                 const li = document.createElement("h1");
            　　　li.textContent = LIMIT;
-           　　　fragment.appendChild(li);
-                }    
+           　　　fragment.appendChild(li); 
             }
         document.getElementById("text").appendChild(fragment);
         }
@@ -72,7 +71,7 @@
         button2.addEventListener('click', () => {
             alert("検索")
             document.getElementById("text").innerHTML = "";
-            S(NUM,DATABASE,NOW,NAME));//NはFの個数、
+            S(NUM,DATABASE,NOW,NAME);//NはFの個数、
         })
         button3.addEventListener('click', () => {
             alert("期限間近")
