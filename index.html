@@ -32,7 +32,7 @@
             for (let i=0; i<=N-1; i++){
                 if ( DB[i][4]-now <= 3 ){
                     const li = document.createElement("h1");
-           　　　    li.textContent = fn[DB[i][1]]+"|"+DB[i][2]+":"+DB[i][3]+"|"+DB[i][4];
+           　　　    li.textContent = fn[DB[i][0]]+"["+fn[DB[i][1]]+"]:"+DB[i][2]+DB[i][3]+"|"+DB[i][4];
            　　　    fragment.appendChild(li);
                 }    
             }
@@ -40,11 +40,11 @@
         }
 
 
-        let DATABASE=[[111,1,1,"パック",20463]]
+        let DATABASE=[[111,1,1,"パック",20462],[111,1,1,"パック",20467],[113,1,1,"パック",20463],]
         let NUM=1
         let FAV=[112]
         let FNUM=1
-        let NAME={111:"鳥肉",112:"豚肉"}
+        let NAME={111:"鳥肉",112:"豚肉",113:"牛肉"}
         let NOW = Date.now();// 例: 1736508364000 (巨大な10進法の数値)
         NOW=NOW/86400000
         
