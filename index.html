@@ -17,20 +17,14 @@
     <p id="message3">消費期限間近</p>
     <button id="btn3">クリック</button>
     <p id="text"></p>
-    <script>
-        function change(A,B,C,D) {
-           const li = document.createElement(B);
-           if (D!=0){
-               li.id = D;
-           }
-           li.textContent = C;
-           A.appendChild(li);;
-        }
+    <script>}
         function K(N,F,FN) {
         const fragment = document.createDocumentFragment();
             for (i=0; i<=N-1; i++){
-                    change(fragment,"h1",FN[F[i]],0);
-                    })
+                const li = document.createElement(h1);
+           　　　li.textContent = FN[F[i]];
+           　　　A.appendChild(li);
+                    }
             }
         document.getElementById("text").appendChild(fragment);
         }
@@ -47,6 +41,7 @@
         const button3 = document.getElementById('btn3');
         button.onclick = () => alert("a");
         button.addEventListener('click', () => {
+        document.getElementById("text").innerHTML = "";
         K(FNUM,FAV,FNAME);//NはFの個数、
         })
     </script>
