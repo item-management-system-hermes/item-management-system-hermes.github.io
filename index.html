@@ -27,13 +27,21 @@
                     }
         document.getElementById("text").appendChild(fragment);
         }
-        function S(N,DB,now,fn) {
+        function S(n,d,l) {
         const fragment = document.createDocumentFragment();
-            for (let i=0; i<=N-1; i++){
-                let LIMIT=DB[i][4]-now
-                const li = document.createElement("h1");
-           　　　li.textContent = LIMIT;
-           　　　fragment.appendChild(li); 
+            for (let i=0; i<=n-1; i++){
+                if ( l[i]  == X){
+                    i=n
+                   for (let k=1; k<=1; k++){
+                       x=X+k
+                       if (d[x*Y] !=undefined){
+                           k=0;
+                           const li = document.createElement("h1");
+           　　　           li.textContent = d[x*Y];
+           　　　           fragment.appendChild(li); 
+                       }    
+                   }
+                }
             }
         document.getElementById("text").appendChild(fragment);
         }
@@ -55,6 +63,11 @@
         let NUM=3
         let FAV=[112]
         let FNUM=1
+        let CATEn=
+        let CATEd={1:"短期",2:"長期",3:"保存食"}
+        let CATEl=[0]
+        let X=0
+        let Y=1
         let NAME={111:"鳥肉",112:"豚肉",113:"牛肉"}
         let NOW = Date.now();
         NOW=Number(NOW)
@@ -72,7 +85,7 @@
         button2.addEventListener('click', () => {
             alert("検索")
             document.getElementById("text").innerHTML = "";
-            S(NUM,DATABASE,NOW,NAME);//NはFの個数、
+            S(CATEn,CATEd,CATEl);//NはFの個数、
         })
         button3.addEventListener('click', () => {
             alert("期限間近")
