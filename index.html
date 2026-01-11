@@ -35,13 +35,13 @@
                    s=0 
                    for (let k=1; s==0; k++){
                        x=X+k;
-                       if (d[x*Y] != undefined){
+                       const li = document.createElement("h1");
+           　　　       li.textContent = d[x*Y];
+                       if (d[x*Y] == undefined){
                            s=1;
-                           const li = document.createElement("h1");
-           　　　           li.textContent = d[x*Y];
-           　　　           fragment.appendChild(li); 
-                       s=s-1
-                       }    
+           　　　       li.textContent = "以上";
+                       }
+           　　　       fragment.appendChild(li); 
                    }
                 }
             }
