@@ -40,10 +40,10 @@
            　　　       li.textContent = d[Y];
            　　　       cl.textContent = "下位分類に入る";
         　　　　　　　　　cl.addEventListener('click', () => {
-                          y=Y*10
-                          alert(y+"分類")
+                          let j=Y*10
+                          alert(j+"分類")
                           document.getElementById("text").innerHTML = "";
-                          S(CATEn,CATEd,CATEl,y);//NはFの個数、
+                          S(CATEn,CATEd,CATEl,j);//NはFの個数、
                        })
                        })
                        if (d[Y] == undefined){
