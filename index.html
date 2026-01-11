@@ -46,8 +46,8 @@
         let FAV=[112]
         let FNUM=1
         let NAME={111:"鳥肉",112:"豚肉",113:"牛肉"}
-        let NOW = Date.now();// 例: 1736508364000 (巨大な10進法の数値)
-        NOW=NOW/86400000-NOW%86400000
+        let NOW = Date.now();
+        NOW=Math.floor(NOW / 86400000);
         
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
