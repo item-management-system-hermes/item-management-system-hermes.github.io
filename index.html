@@ -31,9 +31,9 @@
         const fragment = document.createDocumentFragment();
             for (let i=0; i<=n-1; i++){
                 if ( l[i]  == X){
-                    i=n
+                    i=n;
                    for (let k=1; k<=1; k++){
-                       x=X+k
+                       x=X+k;
                        if (d[x*Y] !=undefined){
                            k=0;
                            const li = document.createElement("h1");
@@ -48,7 +48,7 @@
         function D(N,DB,now,fn) {
         const fragment = document.createDocumentFragment();
             for (let i=0; i<=N-1; i++){
-                let LIMIT=DB[i][4]-now
+                let LIMIT=DB[i][4]-now;
                 if ( LIMIT <= 3 ){
                     const li = document.createElement("h1");
            　　　    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+DB[i][4];
@@ -63,7 +63,7 @@
         let NUM=3
         let FAV=[112]
         let FNUM=1
-        let CATEn=
+        let CATEn=1
         let CATEd={1:"短期",2:"長期",3:"保存食"}
         let CATEl=[0]
         let X=0
