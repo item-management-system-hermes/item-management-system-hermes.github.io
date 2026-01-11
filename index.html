@@ -36,12 +36,14 @@
                    for (let k=1; s==0; k++){
                        x=X+k;
                        const li = document.createElement("h1");
+                       const cl = document.createElement("button");
            　　　       li.textContent = d[x*Y];
                        if (d[x*Y] == undefined){
                            s=1;
            　　　       li.textContent = "以上";
                        }
            　　　       fragment.appendChild(li); 
+           　　　       fragment.appendChild(cl); 
                    }
                 }
             }
