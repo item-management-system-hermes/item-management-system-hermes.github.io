@@ -67,21 +67,18 @@
                 }   
             }
             if (c==0){
-                            //document.getElementById("text").innerHTML = "";
-                            const li = document.createElement("h1");
-                            //const cl = document.createElement("button");
-                            const pq = document.createElement("button");
-                            //cl.textContent = "お気に入り登録";
-                            pq.textContent = "削除";
+                            const fragment2 = document.createDocumentFragment();
+                            const ax = document.createElement("button");
+                            const kx = document.createElement("button");
+                            fragment2.appendChild(ax);
+                            fragment2.appendChild(kx);
+                            document.getElementById("Heading").appendChild(fragment2);
                             for (let t=0; t<=nu-1; t++){
                                 let q=~~(y/10);
                                 if(db[t][0]==q) {
                                     const et = document.createElement("p");
                                     const li = document.createElement("h1");
                                     const pq = document.createElement("button");
-                                    const fragment2 = document.createDocumentFragment();
-                                    const ax = document.createElement("button");
-                                    const kx = document.createElement("button");
                                     et.textContent = "-------------------------";
                                     li.textContent = db[t];
                                     pq.textContent = "削除";
@@ -90,9 +87,6 @@
                                     fragment.appendChild(et); 
                                     fragment.appendChild(li); 
                                     fragment.appendChild(pq);
-                                    fragment2.appendChild(ax);
-                                    fragment2.appendChild(kx);
-                                    document.getElementById("Heading").appendChild(fragment2);
                                     pq.addEventListener('click', () => {
                                         db.splice(t, 1);
                                         nu=nu-1;
