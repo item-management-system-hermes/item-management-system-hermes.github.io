@@ -27,7 +27,7 @@
                     }
         document.getElementById("text").appendChild(fragment);
         }
-        function S(n,d,l,y,db,nu) {
+        function S(n,d,l,y,db,nu,c) {
         const fragment = document.createDocumentFragment();
             for (let i=0; i<=n-1; i++){
                 if ( l[i]  == y){
@@ -40,13 +40,13 @@
                        li.textContent = d[Y];
                        cl.textContent = "下位分類に入る";
                        if (d[Y] != undefined){
-                        C=1;
+                        c=1;
                         cl.addEventListener('click', () => {
                           let j=Y*10;
-                          C=0;
+                          c=0;
                           alert(j+"分類");
                           document.getElementById("text").innerHTML = "";
-                          S(n,d,l,j,db,nu);//NはFの個数、
+                          S(n,d,l,j,db,nu,c);//NはFの個数、
                        })}
                        if (d[Y] == undefined){
                            s=1;
@@ -54,14 +54,15 @@
                            cl.textContent = "上位分類に戻る";
                            cl.addEventListener('click', () => {
                             let j=~~(y/100);
-                            j=j*10
+                            j=j*10;
+                            c=0;
                             alert(j+"分類");
                             document.getElementById("text").innerHTML = "";
-                            S(n,d,l,j,db,nu);//NはFの個数、
+                            S(n,d,l,j,db,nu,c);//NはFの個数、
                            })}
                        fragment.appendChild(li); 
                        fragment.appendChild(cl); 
-                    if (C==0){
+                    if (c==0){
                             //document.getElementById("text").innerHTML = "";
                             const li = document.createElement("h1");
                             //const cl = document.createElement("button");
@@ -79,7 +80,7 @@
                                         nu=nu-1;
                                         alert(y+"分類");
                                         document.getElementById("text").innerHTML = "";
-                                        S(CATEn,CATEd,CATEl,y,db,nu);//NはFの個数、
+                                        S(CATEn,CATEd,CATEl,y,db,nu,c);//NはFの個数、
                            })
                                 }
                             }                    
@@ -135,7 +136,7 @@
         button2.addEventListener('click', () => {
             alert("0分類");
             document.getElementById("text").innerHTML = "";
-            S(CATEn,CATEd,CATEl,X,DATABASE,NUM);//NはFの個数、
+            S(CATEn,CATEd,CATEl,X,DATABASE,NUM,C);//NはFの個数、
         })
         button3.addEventListener('click', () => {
             alert("期限間近");
