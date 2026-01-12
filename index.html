@@ -63,30 +63,7 @@
                        fragment.appendChild(cl); 
                     
                     }
-                    if (C==0){
-                            //document.getElementById("text").innerHTML = "";
-                            const li = document.createElement("h1");
-                            //const cl = document.createElement("button");
-                            const pq = document.createElement("button");
-                            //cl.textContent = "お気に入り登録";
-                            pq.textContent = "削除";
-                            for (let t=0; t<=nu-1; t++){
-                                let q=~~(y/10);
-                                if(db[t][0]==q) {
-                                    li.textContent = db[t];
-                                    fragment.appendChild(li); 
-                                    fragment.appendChild(pq); 
-                                    pq.addEventListener('click', () => {
-                                        db.splice(t, 1);
-                                        nu=nu-1;
-                                        alert(y+"分類");
-                                        document.getElementById("text").innerHTML = "";
-                                        S(CATEn,CATEd,CATEl,y,db,nu);//NはFの個数、
-                           })
-                                }
-                            }                    
-
-                    }
+                    if (C==0){}
                 }
             }
         document.getElementById("text").appendChild(fragment);
