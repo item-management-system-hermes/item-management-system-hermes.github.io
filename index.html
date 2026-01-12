@@ -104,6 +104,7 @@
                                c=0;
                                alert(j+"分類");
                                document.getElementById("text").innerHTML = "";
+                               document.getElementById("Heading").innerHTML = "";
                                S(n,d,l,j,db,nu,c);//NはFの個数、
                            })
                            fragment.appendChild(jv);
@@ -151,16 +152,19 @@
         button.addEventListener('click', () => {
             alert("欠品表");
             document.getElementById("text").innerHTML = "";
+            document.getElementById("Heading").innerHTML = "";
             M(FNUM,FAV,NAME);//NはFの個数、
         })
         button2.addEventListener('click', () => {
             alert("0分類");
             document.getElementById("text").innerHTML = "";
+            document.getElementById("Heading").innerHTML = "";
             S(CATEn,CATEd,CATEl,X,DATABASE,NUM,C);//NはFの個数、
         })
         button3.addEventListener('click', () => {
             alert("期限間近");
             document.getElementById("text").innerHTML = "";
+            document.getElementById("Heading").innerHTML = "";
             D(NUM,DATABASE,NOW,NAME);
         })
     </script>
