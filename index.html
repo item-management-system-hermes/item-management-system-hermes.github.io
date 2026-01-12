@@ -33,7 +33,6 @@
                 if ( l[i]  == y){
                    i=n;
                    let s=0;
-                   let C=0;
                    for (let k=1; s==0; k++){
                        let Y=y+k;
                        const li = document.createElement("h1");
@@ -44,6 +43,7 @@
                         C=1;
                         cl.addEventListener('click', () => {
                           let j=Y*10;
+                          C=0;
                           alert(j+"分類");
                           document.getElementById("text").innerHTML = "";
                           S(n,d,l,j,db,nu);//NはFの個数、
@@ -61,6 +61,30 @@
                            })}
                        fragment.appendChild(li); 
                        fragment.appendChild(cl); 
+                    if (C==0){
+                            //document.getElementById("text").innerHTML = "";
+                            const li = document.createElement("h1");
+                            //const cl = document.createElement("button");
+                            const pq = document.createElement("button");
+                            //cl.textContent = "お気に入り登録";
+                            pq.textContent = "削除";
+                            for (let t=0; t<=nu-1; t++){
+                                let q=~~(y/10);
+                                if(db[t][0]==q) {
+                                    li.textContent = db[t];
+                                    fragment.appendChild(li); 
+                                    fragment.appendChild(pq); 
+                                    pq.addEventListener('click', () => {
+                                        db.splice(t, 1);
+                                        nu=nu-1;
+                                        alert(y+"分類");
+                                        document.getElementById("text").innerHTML = "";
+                                        S(CATEn,CATEd,CATEl,y,db,nu);//NはFの個数、
+                           })
+                                }
+                            }                    
+
+                    }
                     
                     }
                 }
@@ -92,6 +116,7 @@
                    21:"調味料",22:"麺",23:"粉・乾物",24:"お菓子",25:"冷凍食品",26:"その他",
                    31:"缶詰・瓶詰め",32:"レトルト",33:"インスタント",34:"主食",35:"水",36:"その他"}
         let CATEl=[0,10,20,30,110,120,130,210,220,230,240,250,260,310,320,330,340,350,360]
+        let C=0
         let X=0
         let NAME={111:"鳥肉",112:"豚肉",113:"牛肉"}
         let NOW = Date.now();
