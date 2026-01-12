@@ -62,7 +62,10 @@
                            })}
                        fragment.appendChild(li); 
                        fragment.appendChild(cl); 
-                    if (c==0){
+                    }   
+                }   
+            }
+            if (c==0){
                             //document.getElementById("text").innerHTML = "";
                             const li = document.createElement("h1");
                             //const cl = document.createElement("button");
@@ -86,10 +89,7 @@
                             }                    
 
                     }
-                    
-                    }
-                }
-            }
+              
         document.getElementById("text").appendChild(fragment);
         }
         function D(N,DB,now,fn) {
