@@ -75,10 +75,13 @@
                             for (let t=0; t<=nu-1; t++){
                                 let q=~~(y/10);
                                 if(db[t][0]==q) {
+                                    const et = document.createElement("p");
                                     const li = document.createElement("h1");
                                     const pq = document.createElement("button");
+                                    et.textContent = "-------------------------";
                                     li.textContent = db[t];
                                     pq.textContent = "削除";
+                                    fragment.appendChild(et); 
                                     fragment.appendChild(li); 
                                     fragment.appendChild(pq); 
                                     pq.addEventListener('click', () => {
