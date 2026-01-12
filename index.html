@@ -16,6 +16,7 @@
     <button id="btn2">クリック</button>
     <p id="message3">消費期限間近</p>
     <button id="btn3">クリック</button>
+    <p id="Heading"></p>
     <p id="text"></p>
     <script>
         function M(N,F,FN) {
@@ -78,12 +79,20 @@
                                     const et = document.createElement("p");
                                     const li = document.createElement("h1");
                                     const pq = document.createElement("button");
+                                    const fragment2 = document.createDocumentFragment();
+                                    const ax = document.createElement("button");
+                                    const kx = document.createElement("button");
                                     et.textContent = "-------------------------";
                                     li.textContent = db[t];
                                     pq.textContent = "削除";
+                                    ax.textContent = "お気に入り";
+                                    kx.textContent = "追加";
                                     fragment.appendChild(et); 
                                     fragment.appendChild(li); 
-                                    fragment.appendChild(pq); 
+                                    fragment.appendChild(pq);
+                                    fragment2.appendChild(ax);
+                                    fragment2.appendChild(kx);
+                                    document.getElementById("Heading").appendChild(fragment2);
                                     pq.addEventListener('click', () => {
                                         db.splice(t, 1);
                                         nu=nu-1;
