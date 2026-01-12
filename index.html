@@ -46,7 +46,7 @@
                           let j=Y*10;
                           alert(j+"分類");
                           document.getElementById("text").innerHTML = "";
-                          S(CATEn,CATEd,CATEl,j,db,nu);//NはFの個数、
+                          S(n,d,l,j,db,nu);//NはFの個数、
                        })}
                        if (d[Y] == undefined){
                            s=1;
@@ -57,7 +57,7 @@
                             j=j*10
                             alert(j+"分類");
                             document.getElementById("text").innerHTML = "";
-                            S(CATEn,CATEd,CATEl,j,db,nu);//NはFの個数、
+                            S(n,d,l,j,db,nu);//NはFの個数、
                            })}
                        fragment.appendChild(li); 
                        fragment.appendChild(cl); 
@@ -103,17 +103,17 @@
         const button3 = document.getElementById('btn3');
         
         button.addEventListener('click', () => {
-            alert("欠品表")
+            alert("欠品表");
             document.getElementById("text").innerHTML = "";
             M(FNUM,FAV,NAME);//NはFの個数、
         })
         button2.addEventListener('click', () => {
-            alert("0分類")
+            alert("0分類");
             document.getElementById("text").innerHTML = "";
             S(CATEn,CATEd,CATEl,X,DATABASE,NUM);//NはFの個数、
         })
         button3.addEventListener('click', () => {
-            alert("期限間近")
+            alert("期限間近");
             document.getElementById("text").innerHTML = "";
             D(NUM,DATABASE,NOW,NAME);
         })
