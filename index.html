@@ -70,6 +70,8 @@
                             const fragment2 = document.createDocumentFragment();
                             const ax = document.createElement("button");
                             const kx = document.createElement("button");
+                            ax.textContent = "お気に入り";
+                            kx.textContent = "追加"; 
                             fragment2.appendChild(ax);
                             fragment2.appendChild(kx);
                             document.getElementById("Heading").appendChild(fragment2);
@@ -79,14 +81,12 @@
                                     const et = document.createElement("p");
                                     const li = document.createElement("h1");
                                     const pq = document.createElement("button");
-                                    et.textContent = "-------------------------";
                                     li.textContent = db[t];
                                     pq.textContent = "削除";
-                                    ax.textContent = "お気に入り";
-                                    kx.textContent = "追加";
-                                    fragment.appendChild(et); 
+                                    et.textContent = "-------------------------";
                                     fragment.appendChild(li); 
                                     fragment.appendChild(pq);
+                                    fragment.appendChild(et);
                                     pq.addEventListener('click', () => {
                                         db.splice(t, 1);
                                         nu=nu-1;
