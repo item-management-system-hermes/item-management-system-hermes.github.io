@@ -32,7 +32,8 @@
             for (let i=0; i<=n-1; i++){
                 if ( l[i]  == y){
                    i=n;
-                   let s=0 
+                   let s=0;
+                   let C=0;
                    for (let k=1; s==0; k++){
                        let Y=y+k;
                        const li = document.createElement("h1");
@@ -40,6 +41,7 @@
                        li.textContent = d[Y];
                        cl.textContent = "下位分類に入る";
                        if (d[Y] != undefined){
+                        C=1;
                         cl.addEventListener('click', () => {
                           let j=Y*10;
                           alert(j+"分類");
@@ -60,6 +62,29 @@
                        fragment.appendChild(li); 
                        fragment.appendChild(cl); 
                     
+                    }
+                    if (C==0){
+                            document.getElementById("text").innerHTML = "";
+                            const li = document.createElement("h1");
+                            //const cl = document.createElement("button");
+                            const pq = document.createElement("button");
+                            //cl.textContent = "お気に入り登録";
+                            pq.textContent = "削除";
+                            for (let t=0; t<=NUM-1; t++){
+                                if(DATABASE[t][0]==y/10){
+                                    li.textContent = DATABASE[y/10];
+                                    fragment.appendChild(li); 
+                                    fragment.appendChild(pq); 
+                                    pq.addEventListener('click', () => {
+                                        DATABASE.splice(t, 1);
+                                        NUM=NUM-1;
+                                        alert(y+"分類");
+                                        document.getElementById("text").innerHTML = "";
+                                        S(CATEn,CATEd,CATEl,y);//NはFの個数、
+                           })
+                                }
+                            }                    
+
                     }
                 }
             }
