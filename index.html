@@ -76,7 +76,9 @@
                                 let q=~~(y/10);
                                 if(db[t][0]==q) {
                                     const li = document.createElement("h1");
+                                    const pq = document.createElement("button");
                                     li.textContent = db[t];
+                                    pq.textContent = "削除";
                                     fragment.appendChild(li); 
                                     fragment.appendChild(pq); 
                                     pq.addEventListener('click', () => {
