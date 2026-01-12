@@ -75,6 +75,7 @@
                             for (let t=0; t<=nu-1; t++){
                                 let q=~~(y/10);
                                 if(db[t][0]==q) {
+                                    const li = document.createElement("h1");
                                     li.textContent = db[t];
                                     fragment.appendChild(li); 
                                     fragment.appendChild(pq); 
