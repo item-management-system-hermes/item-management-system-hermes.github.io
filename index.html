@@ -68,6 +68,16 @@
             }
             if (c==0){
                             const fragment2 = document.createDocumentFragment();
+                            const fruits = ["りんご", "みかん", "ぶどう"];
+                            const selectElement = document.getElementById("text");
+                            fruits.forEach(item => {
+    // option要素を新しく作る
+                                  const option = document.createElement("option");
+                                  option.value = item; // 送信される値
+                                  option.innerText = item; // 画面に表示される文字
+    // selectの中に追加する
+                                  selectElement.appendChild(option);
+                            });
                             const ax = document.createElement("button");
                             const kx = document.createElement("button");
                             ax.textContent = "お気に入り";
