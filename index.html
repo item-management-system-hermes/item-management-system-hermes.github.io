@@ -17,6 +17,7 @@
     <p id="message3">消費期限間近</p>
     <button id="btn3">クリック</button>
     <p id="Heading"></p>
+    <select id="text3"></select>
     <p id="text"></p>
     <script>
         function M(N,F,FN) {
@@ -69,7 +70,7 @@
             if (c==0){
                             const fragment2 = document.createDocumentFragment();
                             const fruits = ["りんご", "みかん", "ぶどう"];
-                            const selectElement = document.getElementById("text");
+                            const selectElement = document.getElementById("text3");
                             fruits.forEach(item => {
     // option要素を新しく作る
                                   const option = document.createElement("option");
@@ -77,6 +78,7 @@
                                   option.innerText = item; // 画面に表示される文字
     // selectの中に追加する
                                   selectElement.appendChild(option);
+                                  document.getElementById("text3").appendChild(selectElement);
                             });
                             const ax = document.createElement("button");
                             const kx = document.createElement("button");
