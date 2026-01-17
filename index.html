@@ -69,6 +69,9 @@
             if (c==0){
                             const fragment2 = document.createDocumentFragment();
     // option要素を新しく作る
+                            const input = document.createElement("input");
+                            input.type = 'number';
+                            input.placeholder = "今日から数えて期限は何日後か？";
                             const select = document.createElement("select");
                             for (let t=1; t<=100; t++){
                                        const option = document.createElement("option");
@@ -78,6 +81,7 @@
                                        select.appendChild(option);
                             }
                             fragment2.appendChild(select);
+                            fragment2.appendChild(input);
                             const ax = document.createElement("button");
                             const kx = document.createElement("button");
                             ax.textContent = "お気に入り";
