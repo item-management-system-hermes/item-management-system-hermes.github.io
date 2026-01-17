@@ -19,6 +19,62 @@
     <p id="Heading"></p>
     <p id="text"></p>
     <script>
+        import { initializeApp } from "firebase/app";
+        import { getFirestore } from "firebase/firestore";
+        import { collection, addDoc } from "firebase/firestore";
+        import { collection, getDocs } from "firebase/firestore";
+        import { doc, deleteDoc } from "firebase/firestore";
+        const firebaseConfig = {
+            // Firebaseコンソールの「プロジェクト設定」からコピーしてください
+            apiKey: "...",
+            authDomain: "...",
+            projectId: "...",
+            storageBucket: "...",
+            messagingSenderId: "...",
+            appId: "..."
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        async function ADD(x,y) {
+              const docRef = await addDoc(collection(db, x), y);
+              doc.idconst querySnapshot = await getDocs(collection(db, x));
+              querySnapshot.forEach((doc) => {
+                  console.log(doc.data())
+            });
+        }
+        async function DEL(x,id) {// "users"コレクション内の、特定のidを持つドキュメントを指定
+              await deleteDoc(doc(db, x, id));//doc.id
+              doc.idconst querySnapshot = await getDocs(collection(db, x));
+              querySnapshot.forEach((doc) => {
+                  console.log(doc.data())
+            });
+        }
+        async function GETV(x) {
+            const querySnapshot = await getDocs(collection(db, x));
+            querySnapshot.forEach((doc) => {
+                const do =doc.data();
+            });
+            console.log(Object.values(do))
+            return Object.values(do)
+        }
+        async function GETL(x) {
+            const querySnapshot = await getDocs(collection(db, x));
+            querySnapshot.forEach((doc) => {
+                const do =doc.data();
+                y= [...y ,Object.values(do)];
+            });
+            console.log(y)
+            return y
+        }
+        async function GETD(x) {
+            const querySnapshot = await getDocs(collection(db, x));
+            const y={}
+            querySnapshot.forEach((doc) => {
+               y ={ ...y, ...doc.data() };
+            });
+            console.log(y)
+            return y
+        }
         function M(N,F,FN) {
         const fragment = document.createDocumentFragment();
             for (let i=0; i<=N-1; i++){
