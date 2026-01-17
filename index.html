@@ -71,7 +71,6 @@
                             const suryou = document.createElement("p");
                             const kaigyou = document.createElement("p");
                             suryou.textContent = "個数を入力";
-                            fragment2.appendChild(suryou);
     // option要素を新しく作る
                             const input = document.createElement("input");
                             input.type = 'number';
@@ -84,7 +83,8 @@
     // selectの中に追加する
                                        select.appendChild(option);
                             }
-                            fragment2.appendChild(select);
+                            suryou.appendChild(select);
+                            fragment2.appendChild(suryou);
                             fragment2.appendChild(input);
                             const ax = document.createElement("button");
                             const kx = document.createElement("button");
