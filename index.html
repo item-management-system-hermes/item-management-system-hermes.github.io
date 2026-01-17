@@ -68,6 +68,10 @@
             }
             if (c==0){
                             const fragment2 = document.createDocumentFragment();
+                            const suryou = document.createElement("p");
+                            const kaigyou = document.createElement("p");
+                            suryou.textContent = "個数を入力";
+                            fragment2.appendChild(suryou);
     // option要素を新しく作る
                             const input = document.createElement("input");
                             input.type = 'number';
@@ -87,6 +91,7 @@
                             ax.textContent = "追加";
                             kx.textContent = "お気に入り"; 
                             fragment2.appendChild(ax);
+                            fragment2.appendChild(kaigyou);
                             fragment2.appendChild(kx);
                             document.getElementById("Heading").appendChild(fragment2);
                             for (let t=0; t<=nu-1; t++){
