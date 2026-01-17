@@ -68,17 +68,16 @@
             }
             if (c==0){
                             const fragment2 = document.createDocumentFragment();
-                            fruits.forEach(item => {
     // option要素を新しく作る
-                                  const select = document.createElement("mySelect");
-                                  for (let t=1; t<=10; t++){
+                            const select = document.createElement("select");
+                            for (let t=1; t<=10; t++){
                                        const option = document.createElement("option");
                                        option.value = t; // 送信される値
                                        option.innerText = t; // 画面に表示される文字
     // selectの中に追加する
                                        select.appendChild(option);
-                                  }
-                                  fragment2.appendChild(select);
+                            }
+                            fragment2.appendChild(select);
                             });
                             const ax = document.createElement("button");
                             const kx = document.createElement("button");
