@@ -88,4 +88,308 @@
         let DATABASE = [
             [111, 2, 1, "パック", 20468, "id_1"], 
             [111, 1, 1, "パック", 20460, "id_2"], // 期限切れに近い例
-            [113, 3, 1, "パック", 20500, "id_3"]
+            [113, 3, 1, "パック", 20500, "id_3"] 
+        ];
+
+        // お気に入り（欠品チェック用）リスト [カテゴリID]
+        let FAV_ITEMS = [112, 111]; // 最初は豚肉と鶏肉がお気に入り
+
+        // --- ユーティリティ関数 ---
+
+        // 今日の日付番号を取得
+        function getTodayNumber() {
+            return Math.floor(Date.now() / 86400000);
+        }
+        
+        // 日付番号を「あと〇日」形式に変換
+        function formatDaysLeft(dateNum) {
+            const diff = dateNum - getTodayNumber();
+            if (diff < 0) return `<span class="danger">${Math.abs(diff)}日超過</span>`;
+            if (diff <= 3) return `<span class="danger">あと${diff}日</span>`;
+            return `<span class="safe">あと${diff}日</span>`;
+        }
+
+        // 画面クリア
+        function clearView() {
+            document.getElementById("view-content").innerHTML = "";
+        }
+
+        // --- データ操作関数 ---
+
+        // データの追加
+        function addItemToDB(catId, amount, unitName, days) {
+            const limitDate = getTodayNumber() + parseInt(days);
+            const newRow = [catId, parseInt(amount), 1, unitName, limitDate, generateId()];
+            DATABASE.push(newRow);
+            alert("追加しました！");
+        }
+
+        // データの削除
+        function deleteItemFromDB(uniqueId) {
+            if(!confirm("本当に削除しますか？")) return false;
+            // IDが一致しないものだけ残す（＝一致するものを消す）
+            DATABASE = DATABASE.filter(item => item[5] !== uniqueId);
+            return true;
+        }
+
+        // お気に入りトグル
+        function toggleFavorite(catId) {
+            const index = FAV_ITEMS.indexOf(catId);
+            if (index !== -1) {
+                // 既に登録済みなら解除
+                FAV_ITEMS.splice(index, 1);
+                return false; // 現在の状態: 未登録
+            } else {
+                // 未登録なら登録
+                FAV_ITEMS.push(catId);
+                return true; // 現在の状態: 登録済
+            }
+        }
+
+        // --- メイン表示関数 ---
+
+        // 1. 欠品表の表示
+        function showMissing() {
+            clearView();
+            document.getElementById("view-title").textContent = "欠品チェック（お気に入り）";
+            const container = document.getElementById("view-content");
+            
+            if (FAV_ITEMS.length === 0) {
+                container.innerHTML = "<p>お気に入りが登録されていません。<br>在庫一覧から商品を選んで登録してください。</p>";
+                return;
+            }
+
+            const list = document.createElement("div");
+            
+            FAV_ITEMS.forEach(favId => {
+                // 在庫数チェック
+                const stockItems = DATABASE.filter(item => item[0] === favId);
+                const totalAmount = stockItems.reduce((sum, item) => sum + item[1], 0);
+                
+                const div = document.createElement("div");
+                div.className = "item-row";
+                
+                let name = ITEM_NAMES[favId] || CATEGORIES[favId] || "不明";
+                
+                if (totalAmount > 0) {
+                    div.innerHTML = `<span>✅ <b>${name}</b></span> <span>在庫あり (${totalAmount})</span>`;
+                    div.style.backgroundColor = "#e8f5e9"; // 薄い緑
+                } else {
+                    div.innerHTML = `<span class="danger">⚠️ <b>${name}</b></span> <span class="danger">欠品中！</span>`;
+                    div.style.backgroundColor = "#ffebee"; // 薄い赤
+                }
+                list.appendChild(div);
+            });
+            container.appendChild(list);
+        }
+
+        // 2. 期限切れ間近の表示
+        function showExpiring() {
+            clearView();
+            document.getElementById("view-title").textContent = "消費期限チェック (3日以内)";
+            const container = document.getElementById("view-content");
+            
+            // 期限が近い順にソート
+            const sortedDB = [...DATABASE].sort((a, b) => a[4] - b[4]);
+            let count = 0;
+
+            sortedDB.forEach(item => {
+                const diff = item[4] - getTodayNumber();
+                if (diff <= 3) {
+                    count++;
+                    const div = document.createElement("div");
+                    div.className = "item-row";
+                    const name = ITEM_NAMES[item[0]] || CATEGORIES[item[0]] || "商品";
+                    
+                    div.innerHTML = `
+                        <div>
+                            <b>${name}</b> ${item[1]}${item[3]}<br>
+                            <small>${formatDaysLeft(item[4])}</small>
+                        </div>
+                    `;
+                    
+                    const delBtn = document.createElement("button");
+                    delBtn.textContent = "使い切った";
+                    delBtn.className = "btn-del";
+                    delBtn.onclick = () => {
+                        if(deleteItemFromDB(item[5])) {
+                            showExpiring(); // 再描画
+                        }
+                    };
+                    div.appendChild(delBtn);
+                    container.appendChild(div);
+                }
+            });
+
+            if (count === 0) {
+                container.innerHTML = "<p>期限切れ間近の食材はありません👍</p>";
+            }
+        }
+
+        // 3. 分類検索と詳細表示
+        function renderSearch(currentCategoryId) {
+            clearView();
+            const container = document.getElementById("view-content");
+
+            // タイトル更新
+            let titleText = currentCategoryId === 0 ? "カテゴリ選択" : (CATEGORIES[currentCategoryId] + "");
+            document.getElementById("view-title").textContent = titleText;
+
+            // 下位カテゴリを探す
+            let subCategories = [];
+            if (currentCategoryId === 0) {
+                subCategories = [1, 2, 3];
+            } else {
+                for (let key in CATEGORIES) {
+                    let k = Number(key);
+                    if (Math.floor(k / 10) === currentCategoryId && k !== currentCategoryId) {
+                        subCategories.push(k);
+                    }
+                }
+            }
+
+            // --- A. 下位カテゴリがある場合（フォルダ表示） ---
+            if (subCategories.length > 0) {
+                subCategories.forEach(catId => {
+                    const btn = document.createElement("button");
+                    btn.textContent = CATEGORIES[catId] || catId;
+                    btn.style.width = "100%";
+                    btn.style.padding = "15px";
+                    btn.style.marginBottom = "5px";
+                    btn.style.textAlign = "left";
+                    btn.onclick = () => renderSearch(catId);
+                    container.appendChild(btn);
+                });
+                
+                // 戻るボタン
+                if (currentCategoryId !== 0) {
+                    const backBtn = document.createElement("button");
+                    backBtn.textContent = "↑ 戻る";
+                    backBtn.className = "btn-back";
+                    backBtn.style.marginTop = "20px";
+                    backBtn.onclick = () => {
+                        let parentId = Math.floor(currentCategoryId / 10);
+                        if (currentCategoryId < 10) parentId = 0;
+                        renderSearch(parentId);
+                    };
+                    container.appendChild(backBtn);
+                }
+
+            } else {
+                // --- B. 最下層（アイテム詳細画面） ---
+                
+                // --- お気に入りボタン ---
+                const isFav = FAV_ITEMS.includes(currentCategoryId);
+                const favBtn = document.createElement("button");
+                favBtn.textContent = isFav ? "★ お気に入り登録中" : "☆ お気に入りに追加";
+                favBtn.className = isFav ? "btn-fav" : "btn-fav inactive";
+                favBtn.style.width = "100%";
+                favBtn.onclick = () => {
+                    const newState = toggleFavorite(currentCategoryId);
+                    // ボタンの見た目だけ更新
+                    favBtn.textContent = newState ? "★ お気に入り登録中" : "☆ お気に入りに追加";
+                    favBtn.className = newState ? "btn-fav" : "btn-fav inactive";
+                };
+                container.appendChild(favBtn);
+
+                // --- 在庫リスト表示 ---
+                const listTitle = document.createElement("h4");
+                listTitle.textContent = "現在の在庫";
+                container.appendChild(listTitle);
+
+                const items = DATABASE.filter(row => row[0] === currentCategoryId);
+                
+                if (items.length === 0) {
+                    const p = document.createElement("p");
+                    p.textContent = "在庫はありません。";
+                    p.style.color = "#888";
+                    container.appendChild(p);
+                } else {
+                    items.forEach(item => {
+                        const div = document.createElement("div");
+                        div.className = "item-row";
+                        div.innerHTML = `
+                            <div>
+                                <span style="font-size:1.2em; font-weight:bold;">${item[1]}</span> ${item[3]}
+                                <br><small>${formatDaysLeft(item[4])}</small>
+                            </div>
+                        `;
+                        
+                        const delBtn = document.createElement("button");
+                        delBtn.textContent = "削除";
+                        delBtn.className = "btn-del";
+                        delBtn.onclick = () => {
+                            if(deleteItemFromDB(item[5])) { // item[5]はユニークID
+                                renderSearch(currentCategoryId); // 画面更新
+                            }
+                        };
+                        div.appendChild(delBtn);
+                        container.appendChild(div);
+                    });
+                }
+
+                // --- 追加フォーム ---
+                const formDiv = document.createElement("div");
+                formDiv.className = "input-area";
+                formDiv.innerHTML = `<h4>新しく追加する</h4>`;
+                
+                // 数入力
+                const amountInput = document.createElement("input");
+                amountInput.type = "number";
+                amountInput.placeholder = "個数";
+                amountInput.value = 1;
+                amountInput.style.width = "50px";
+
+                // 単位選択
+                const unitSelect = document.createElement("select");
+                ["個", "パック", "袋", "本", "枚"].forEach(u => {
+                    const op = document.createElement("option");
+                    op.value = u; op.textContent = u;
+                    unitSelect.appendChild(op);
+                });
+
+                // 期限入力
+                const daysInput = document.createElement("input");
+                daysInput.type = "number";
+                daysInput.placeholder = "期限(あと何日？)";
+                daysInput.style.width = "100px";
+                
+                const addBtn = document.createElement("button");
+                addBtn.textContent = "追加";
+                addBtn.className = "btn-add";
+                addBtn.onclick = () => {
+                    if(!daysInput.value) { alert("期限を入力してください"); return; }
+                    addItemToDB(currentCategoryId, amountInput.value, unitSelect.value, daysInput.value);
+                    renderSearch(currentCategoryId); // 画面更新
+                };
+
+                formDiv.appendChild(amountInput);
+                formDiv.appendChild(unitSelect);
+                formDiv.appendChild(daysInput);
+                formDiv.appendChild(document.createElement("br"));
+                formDiv.appendChild(document.createElement("br"));
+                formDiv.appendChild(addBtn);
+
+                container.appendChild(formDiv);
+
+                // 戻るボタン
+                const backBtn = document.createElement("button");
+                backBtn.textContent = "↑ 上位カテゴリに戻る";
+                backBtn.className = "btn-back";
+                backBtn.style.marginTop = "20px";
+                backBtn.onclick = () => {
+                    let parentId = Math.floor(currentCategoryId / 10);
+                    renderSearch(parentId);
+                };
+                container.appendChild(backBtn);
+            }
+        }
+
+        // --- 初期イベント設定 ---
+        document.getElementById('btn-missing').addEventListener('click', showMissing);
+        document.getElementById('btn-search').addEventListener('click', () => renderSearch(0));
+        document.getElementById('btn-expiring').addEventListener('click', showExpiring);
+
+    </script>
+</body>
+</html>
