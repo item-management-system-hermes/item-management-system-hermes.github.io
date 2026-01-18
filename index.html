@@ -21,6 +21,7 @@
     <script>
         let FAV=[112]
         let FNUM=1
+        let IDN={111:2,113:1}
         function M(N,F,FN) {
         const fragment = document.createDocumentFragment();
             for (let i=0; i<=N-1; i++){
@@ -77,6 +78,9 @@
                             const input = document.createElement("input");
                             input.type = 'number';
                             input.placeholder = "今日から数えて期限は何日後か？";
+                            const tani = document.createElement("input");
+                            tani.type = 'text';
+                            tani.placeholder = "単位名を入力";
                             const select = document.createElement("select");
                             for (let t=1; t<=100; t++){
                                        const option = document.createElement("option");
@@ -87,10 +91,26 @@
                             }
                             suryou.appendChild(select);
                             fragment2.appendChild(suryou);
+                            fragment2.appendChild(tani);
                             fragment2.appendChild(input);
                             const ax = document.createElement("button");
                             const kx = document.createElement("button");
                             ax.textContent = "追加";
+                            ax.addEventListener('click', () => {
+                                        if(tani.value=="" ||input.value==""){
+                                            FAV.splice(MEMOX, 1);
+                                            FNUM=FNUM-1;
+                                            alert("");
+                                        }else{
+                                            nu=nu+1;
+                                            IDN[y/10]=IDN[y/10]+1;
+                                            db.push([y/10,IDN[y/10],select.value,tani.value,input.value]);
+                                            
+                                        }
+                                        document.getElementById("text").innerHTML = "";
+                                        document.getElementById("Heading").innerHTML = "";
+                                        S(CATEn,CATEd,CATEl,y,db,nu,c);//NはFの個数、
+                           })
                             let NAMEOFF="登録する";
                             let h=y/10
                             let MEMOX
@@ -172,7 +192,7 @@
         }
 
 
-        let DATABASE=[[111,1,1,"パック",20480],[111,1,1,"パック",20467],[113,1,1,"パック",20468],]
+        let DATABASE=[[111,1,1,"パック",20480],[111,2,1,"パック",20467],[113,1,1,"パック",20468],]
         let NUM=3
         let CATEn=19
         let CATEd={1:"短期",2:"長期",3:"保存食",
