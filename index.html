@@ -92,8 +92,10 @@
                             const kx = document.createElement("button");
                             ax.textContent = "追加";
                             let NAMEOFF="登録する";
+                            let h=Y-1
+                            h=h/10
                             for(let v=0; v<=FNUM-1; v++){
-                                if(FAV[v]==Y){
+                                if(FAV[v]==h){
                                     NAMEOFF="登録解除";
                                     let MEMO=v;
                                 }
@@ -106,7 +108,7 @@
                                             alert("お気に入り解除");
                                         }else{
                                             FNUM=FNUM+1;
-                                            FAV.push(Y);
+                                            FAV.push(h);
                                             alert("お気に入り登録");
                                         }
                                         document.getElementById("text").innerHTML = "";
