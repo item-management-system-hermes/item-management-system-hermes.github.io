@@ -89,7 +89,27 @@
                             const ax = document.createElement("button");
                             const kx = document.createElement("button");
                             ax.textContent = "追加";
-                            kx.textContent = "お気に入り"; 
+                            let NAMEOFF="登録する";
+                            for(let v=0; v<=FNUM-1; v++){
+                                if(FAV[v]==Y){
+                                    NAMEOFF="登録解除";
+                                    let MEMO=v;
+                                }
+                            }
+                            kx.textContent = "お気に入り"+NAMEOFF; 
+                            kx.addEventListener('click', () => {
+                                        if(NAMEOFF="登録解除"){
+                                            FAV.splice(MEMO, 1);
+                                            FNUM=FNUM-1;
+                                            alert("お気に入り解除");
+                                        }else{
+                                            FNUM=FNUM+1;
+                                            FAV.push(Y);
+                                            alert("お気に入り登録");
+                                        }
+                                        document.getElementById("text").innerHTML = "";
+                                        S(CATEn,CATEd,CATEl,y,db,nu,c);//NはFの個数、
+                           })
                             fragment2.appendChild(ax);
                             fragment2.appendChild(kaigyou);
                             fragment2.appendChild(kx);
