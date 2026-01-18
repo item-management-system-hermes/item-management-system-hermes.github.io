@@ -56,18 +56,8 @@
                        })}
                        if (d[Y] == undefined){
                            s=1;
-                           li.textContent = "以上";
-                           cl.textContent = "上位分類に戻る";
-                           cl.addEventListener('click', () => {
-                            let j=~~(y/100);
-                            j=j*10;
-                            c=0;
-                            alert(j+"分類");
-                            document.getElementById("text").innerHTML = "";
-                            S(n,d,l,j,db,nu,c);//NはFの個数、
-                           })}
+                           li.textContent = "以上";}
                        fragment.appendChild(li); 
-                       fragment.appendChild(cl); 
                     }   
                 }   
             }
@@ -166,9 +156,10 @@
                            })
                                 }
                             }
-                            const jv = document.createElement("button");
-                            jv.textContent = "上位分類に戻る";
-                            jv.addEventListener('click', () => {
+                    }
+                    const jv = document.createElement("button");
+                    jv.textContent = "上位分類に戻る";
+                    jv.addEventListener('click', () => {
                                let j=~~(y/100);
                                j=j*10;
                                c=0;
@@ -177,8 +168,7 @@
                                document.getElementById("Heading").innerHTML = "";
                                S(n,d,l,j,db,nu,c);//NはFの個数、
                            })
-                           fragment.appendChild(jv);
-
+                    fragment.appendChild(jv);
                     }
               
         document.getElementById("text").appendChild(fragment);
