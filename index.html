@@ -92,17 +92,18 @@
                             const kx = document.createElement("button");
                             ax.textContent = "追加";
                             let NAMEOFF="登録する";
-                            let h=~~(Y/10)
+                            let h=number(Y)
+                            h=~~(h/10)
                             for(let v=0; v<=FNUM-1; v++){
                                 if(FAV[v]==h){
                                     NAMEOFF="登録解除";
-                                    let MEMO=v;
+                                    let MEMOX=v;
                                 }
                             }
                             kx.textContent = "お気に入り"+NAMEOFF; 
                             kx.addEventListener('click', () => {
                                         if(NAMEOFF=="登録解除"){
-                                            FAV.splice(MEMO, 1);
+                                            FAV.splice(MEMOX, 1);
                                             FNUM=FNUM-1;
                                             alert("お気に入り解除");
                                         }else{
