@@ -149,7 +149,7 @@
                                     const et = document.createElement("p");
                                     const li = document.createElement("h1");
                                     const pq = document.createElement("button");
-                                    li.textContent = NAME[DB[t][0]]+"["+DB[t][1]+"]:"+DB[t][2]+DB[t][3]+"|"+DB[t][4]-NOW;
+                                    li.textContent = NAME[DB[t][0]]+"["+DB[t][1]+"]:"+DB[t][2]+DB[t][3]+"|"+number(DB[t][4])-number(NOW);
                                     pq.textContent = "削除";
                                     et.textContent = "-------------------------";
                                     fragment.appendChild(li); 
