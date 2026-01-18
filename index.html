@@ -104,13 +104,13 @@
                                         if(tani.value=="" ||input.value==""){
                                             FAV.splice(MEMOX, 1);
                                             FNUM=FNUM-1;
-                                            alert("");
+                                            alert("入力欄に空欄が存在します");
                                         }else{
                                             nu=nu+1;
                                             IDN[y/10]=IDN[y/10]+1;
                                             let rz=Number(input.value)+Number(NOW)
                                             db.push([y/10,IDN[y/10],select.value,tani.value,rz]);
-                                            
+                                            alert("追加成功");
                                         }
                                         document.getElementById("text").innerHTML = "";
                                         document.getElementById("Heading").innerHTML = "";
