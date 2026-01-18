@@ -19,6 +19,9 @@
     <p id="Heading"></p>
     <p id="text"></p>
     <script>
+        let NOW = Date.now();
+        NOW=Number(NOW)
+        NOW=Math.floor(NOW / 86400000);
         let FAV=[112]
         let FNUM=1
         let IDN={111:2,113:1}
@@ -104,7 +107,7 @@
                                         }else{
                                             nu=nu+1;
                                             IDN[y/10]=IDN[y/10]+1;
-                                            db.push([y/10,IDN[y/10],select.value,tani.value,input.value]);
+                                            db.push([y/10,IDN[y/10],select.value,tani.value,input.value+NOW]);
                                             
                                         }
                                         document.getElementById("text").innerHTML = "";
@@ -145,7 +148,7 @@
                                     const et = document.createElement("p");
                                     const li = document.createElement("h1");
                                     const pq = document.createElement("button");
-                                    li.textContent = db[t];
+                                    li.textContent = NAME[DB[t][0]]+"["+DB[t][1]+"]:"+DB[t][2]+DB[t][3]+"|"+DB[t][4]-NOW;
                                     pq.textContent = "削除";
                                     et.textContent = "-------------------------";
                                     fragment.appendChild(li); 
@@ -184,7 +187,7 @@
                 let LIMIT=DB[i][4]-now;
                 if ( LIMIT <= 3 ){
                     const li = document.createElement("h1");
-                    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+DB[i][4];
+                    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+DB[i][4]-NOW;
                     fragment.appendChild(li);
                 }    
             }
@@ -204,9 +207,6 @@
         let C=0
         let X=0
         let NAME={111:"鳥肉",112:"豚肉",113:"牛肉"}
-        let NOW = Date.now();
-        NOW=Number(NOW)
-        NOW=Math.floor(NOW / 86400000);
         
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
