@@ -3,45 +3,72 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>食材管理アプリ</title>
+    <title>食材管理アプリ v2</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; }
-        button { margin: 5px; padding: 5px 10px; cursor: pointer; }
-        .item-row { border-bottom: 1px solid #ccc; padding: 10px 0; }
-        .danger { color: red; font-weight: bold; }
-        h1 { font-size: 1.2rem; margin-top: 20px; border-left: 5px solid #4CAF50; padding-left: 10px; }
+        body { font-family: "Helvetica Neue", Arial, sans-serif; padding: 20px; background-color: #f9f9f9; color: #333; }
+        h1, h2, h3 { color: #2c3e50; }
+        
+        /* ボタンの共通スタイル */
+        button { 
+            padding: 8px 12px; 
+            margin: 5px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        button:hover { opacity: 0.8; }
+
+        /* メニューボタン */
+        .menu-btn { background-color: #3498db; color: white; width: 100%; margin-bottom: 10px; padding: 10px; font-size: 16px; }
+        
+        /* 機能ボタン */
+        .btn-add { background-color: #2ecc71; color: white; } /* 緑 */
+        .btn-del { background-color: #e74c3c; color: white; font-size: 12px; margin-left: 10px;} /* 赤 */
+        .btn-fav { background-color: #f1c40f; color: white; font-weight: bold; } /* 黄 */
+        .btn-fav.inactive { background-color: #bdc3c7; color: #fff; } /* グレー */
+        .btn-back { background-color: #95a5a6; color: white; } /* グレー */
+
+        /* リスト表示 */
+        .item-row { 
+            background: white; 
+            border-bottom: 1px solid #eee; 
+            padding: 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .danger { color: #e74c3c; font-weight: bold; }
+        .safe { color: #2ecc71; }
+        
+        /* 入力フォーム */
+        .input-area { background: #fff; padding: 15px; margin-top: 20px; border-radius: 8px; border: 1px solid #ddd; }
+        input, select { padding: 8px; margin-right: 5px; border: 1px solid #ccc; border-radius: 4px; }
     </style>
 </head>
 <body>
-    <label for="name">食材の種類：</label>
-    <input type="text" id="name" name="user_name" placeholder="例：ひらがなで">
+
+    <h2 style="text-align:center;">在庫管理パントリー</h2>
     
-    <div style="margin-top: 10px;">
-        <button id="btn-missing">欠品表</button>
-        <button id="btn-search">検索（カテゴリ）</button>
-        <button id="btn-expiring">消費期限間近</button>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+        <button id="btn-missing" class="menu-btn" style="width:30%">欠品確認</button>
+        <button id="btn-search" class="menu-btn" style="width:30%">在庫一覧</button>
+        <button id="btn-expiring" class="menu-btn" style="width:30%">期限間近</button>
     </div>
 
+    <hr>
+
     <div id="app-container">
-        <h2 id="view-title">こんにちは！</h2>
-        <div id="view-content"></div>
+        <h3 id="view-title">ようこそ！</h3>
+        <div id="view-content">
+            <p>上のボタンからメニューを選択してください。</p>
+        </div>
     </div>
 
     <script type="module">
-        // Firebase関連のインポート（一旦コメントアウトしていますが、使うときは設定を入れてください）
-        /*
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            // ... 他の設定 ...
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        */
+        // --- データ定義 ---
 
-        // --- データ定義 (ローカルテスト用) ---
         // カテゴリ定義
         const CATEGORIES = {
             1: "短期", 2: "長期", 3: "保存食",
@@ -51,233 +78,14 @@
             31: "缶詰・瓶詰め", 32: "レトルト", 33: "インスタント", 34: "主食", 35: "水", 36: "その他"
         };
         
-        // カテゴリIDのリスト (階層判定用)
-        const CATEGORY_IDS = Object.keys(CATEGORIES).map(Number);
+        // アイテム名マスタ (カテゴリIDに対応する名前)
+        const ITEM_NAMES = { 111: "鶏肉", 112: "豚肉", 113: "牛肉", 12: "野菜全般", 21: "調味料", 35: "水" };
 
-        // アイテム名マスタ
-        const ITEM_NAMES = { 111: "鶏肉", 112: "豚肉", 113: "牛肉" };
+        // 一意なIDを生成する関数
+        const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-        // 在庫データ [カテゴリID, 個数, 単位, 単位名, 期限日(1970/1/1からの日数)]
-        // 日付の 20468 は 2026年1月15日あたりです
+        // 在庫データ構造: [カテゴリID, 個数, 単位(未使用), 単位名, 期限日(1970/1/1からの日数), ユニークID]
         let DATABASE = [
-            [111, 1, 1, "パック", 20468], 
-            [111, 1, 1, "パック", 20467], 
-            [113, 1, 1, "パック", 20500] 
-        ];
-
-        // お気に入り（欠品チェック用）リスト
-        let FAV_ITEMS = [112, 111]; // 豚肉と鶏肉をよく買う設定
-
-        // --- ユーティリティ関数 ---
-
-        // 今日の日付番号を取得 (1970/1/1からの日数)
-        function getTodayNumber() {
-            return Math.floor(Date.now() / 86400000);
-        }
-
-        // 表示エリアをクリアする関数
-        function clearView() {
-            document.getElementById("view-content").innerHTML = "";
-        }
-
-        // --- メイン機能関数 ---
-
-        // M: 欠品表を表示 (お気に入りにあるけど、DATABASEにないものなど)
-        function showMissing() {
-            clearView();
-            document.getElementById("view-title").textContent = "欠品表 (お気に入り)";
-            
-            const list = document.createElement("ul");
-            
-            FAV_ITEMS.forEach(favId => {
-                // 在庫にあるかチェック
-                const inStock = DATABASE.some(item => item[0] === favId);
-                
-                const li = document.createElement("li");
-                let text = ITEM_NAMES[favId] || "不明な食材";
-                
-                if (inStock) {
-                    text += " (在庫あり)";
-                    li.style.color = "gray";
-                } else {
-                    text += " (欠品中！)";
-                    li.style.color = "red";
-                    li.style.fontWeight = "bold";
-                }
-                li.textContent = text;
-                list.appendChild(li);
-            });
-            document.getElementById("view-content").appendChild(list);
-        }
-
-        // S: カテゴリ検索とアイテム表示 (再帰的なロジックを整理)
-        function renderSearch(currentCategoryId) {
-            clearView();
-            const container = document.getElementById("view-content");
-
-            // タイトル更新
-            let titleText = currentCategoryId === 0 ? "トップ分類" : (CATEGORIES[currentCategoryId] + " 分類");
-            document.getElementById("view-title").textContent = titleText;
-
-            // --- 1. 下位カテゴリがあるか探す ---
-            // 例: current=1 (短期) なら、11(肉), 12(野菜) を探す
-            // ロジック: IDを10で割った整数部分が currentCategoryId と一致するか
-            let subCategories = [];
-            if (currentCategoryId === 0) {
-                // トップレベル (1桁のID)
-                subCategories = [1, 2, 3];
-            } else {
-                // 2桁以降の検索ロジック (簡易版)
-                for (let key in CATEGORIES) {
-                    let k = Number(key);
-                    if (Math.floor(k / 10) === currentCategoryId && k !== currentCategoryId) {
-                        subCategories.push(k);
-                    }
-                }
-            }
-
-            // --- 2. 下位カテゴリボタンを表示 ---
-            if (subCategories.length > 0) {
-                subCategories.forEach(catId => {
-                    const btn = document.createElement("button");
-                    btn.textContent = CATEGORIES[catId] || catId;
-                    btn.onclick = () => renderSearch(catId); // 再帰呼び出しではなく状態更新
-                    container.appendChild(btn);
-                });
-                
-                // 戻るボタン
-                if (currentCategoryId !== 0) {
-                    const backBtn = document.createElement("button");
-                    backBtn.textContent = "↑ 上位に戻る";
-                    backBtn.style.backgroundColor = "#ddd";
-                    backBtn.onclick = () => {
-                        let parentId = Math.floor(currentCategoryId / 10);
-                        if (currentCategoryId < 10) parentId = 0;
-                        renderSearch(parentId);
-                    };
-                    container.appendChild(document.createElement("br"));
-                    container.appendChild(backBtn);
-                }
-
-            } else {
-                // --- 3. 最下層（アイテム表示） ---
-                const msg = document.createElement("p");
-                msg.textContent = "このカテゴリの在庫一覧:";
-                container.appendChild(msg);
-
-                // このカテゴリIDを持つアイテムをDBから抽出
-                const items = DATABASE.filter(row => row[0] === currentCategoryId);
-
-                if (items.length === 0) {
-                    container.appendChild(document.createTextNode("在庫なし"));
-                }
-
-                items.forEach((item, index) => {
-                    const div = document.createElement("div");
-                    div.className = "item-row";
-                    // item: [id, amount, unit, unitName, date]
-                    const dateDiff = item[4] - getTodayNumber();
-                    div.innerHTML = `
-                        <strong>${ITEM_NAMES[item[0]] || "???"}</strong> 
-                        ${item[1]}${item[3]} 
-                        (あと${dateDiff}日) 
-                    `;
-                    
-                    // 削除ボタン
-                    const delBtn = document.createElement("button");
-                    delBtn.textContent = "削除";
-                    delBtn.onclick = () => {
-                        // DBから削除するロジック（実際はsplice等）
-                        // ここでは簡易的にDOMを消すだけですが、実際は DATABASE.splice(originalIndex, 1) が必要
-                        alert("削除しました（リロードで戻ります）");
-                        div.remove();
-                    };
-
-                    div.appendChild(delBtn);
-                    container.appendChild(div);
-                });
-
-                // 入力フォームの表示
-                const formDiv = document.createElement("div");
-                formDiv.style.marginTop = "20px";
-                formDiv.style.borderTop = "2px dashed #ccc";
-                formDiv.innerHTML = `<h3>新規追加</h3>`;
-                
-                const dateInput = document.createElement("input");
-                dateInput.type = "number";
-                dateInput.placeholder = "期限まで何日？";
-                
-                const addBtn = document.createElement("button");
-                addBtn.textContent = "追加";
-                addBtn.onclick = () => {
-                    if(!dateInput.value) return;
-                    const days = Number(dateInput.value);
-                    const newDate = getTodayNumber() + days;
-                    // DBに追加
-                    DATABASE.push([currentCategoryId, 1, 1, "個", newDate]);
-                    alert("追加しました");
-                    renderSearch(currentCategoryId); // 再描画
-                };
-
-                formDiv.appendChild(dateInput);
-                formDiv.appendChild(addBtn);
-                
-                // 戻るボタン
-                const backBtn = document.createElement("button");
-                backBtn.textContent = "↑ 分類選択に戻る";
-                backBtn.onclick = () => {
-                    let parentId = Math.floor(currentCategoryId / 10);
-                    renderSearch(parentId);
-                };
-
-                container.appendChild(formDiv);
-                container.appendChild(backBtn);
-            }
-        }
-
-        // D: 消費期限間近を表示
-        function showExpiring() {
-            clearView();
-            document.getElementById("view-title").textContent = "消費期限間近 (3日以内)";
-            const container = document.getElementById("view-content");
-            const today = getTodayNumber();
-
-            // 期限が近い順にソートしたい場合はここで sort しますが、今回はそのまま
-            let count = 0;
-
-            DATABASE.forEach(item => {
-                const limitDay = item[4];
-                const diff = limitDay - today;
-
-                if (diff <= 3) { // 3日以内
-                    count++;
-                    const div = document.createElement("div");
-                    div.className = "item-row";
-                    
-                    let statusText = "";
-                    if (diff < 0) statusText = `(${Math.abs(diff)}日超過)`;
-                    else statusText = `(あと${diff}日)`;
-
-                    div.innerHTML = `
-                        <span class="danger">${ITEM_NAMES[item[0]] || "商品"}</span>
-                        : ${item[1]}${item[3]} 
-                        ${statusText}
-                    `;
-                    container.appendChild(div);
-                }
-            });
-
-            if (count === 0) {
-                container.textContent = "期限切れ間近の食材はありません。優秀です！";
-            }
-        }
-
-
-        // --- イベントリスナー設定 ---
-        document.getElementById('btn-missing').addEventListener('click', showMissing);
-        document.getElementById('btn-search').addEventListener('click', () => renderSearch(0)); // 0 = トップ
-        document.getElementById('btn-expiring').addEventListener('click', showExpiring);
-
-    </script>
-</body>
-</html>
+            [111, 2, 1, "パック", 20468, "id_1"], 
+            [111, 1, 1, "パック", 20460, "id_2"], // 期限切れに近い例
+            [113, 3, 1, "パック", 20500, "id_3"]
