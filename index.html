@@ -92,8 +92,7 @@
                             const kx = document.createElement("button");
                             ax.textContent = "追加";
                             let NAMEOFF="登録する";
-                            let h=Y-1
-                            h=h/10
+                            let h=~~(Y/10)
                             for(let v=0; v<=FNUM-1; v++){
                                 if(FAV[v]==h){
                                     NAMEOFF="登録解除";
