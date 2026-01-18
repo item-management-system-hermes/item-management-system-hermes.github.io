@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -91,15 +92,6 @@
                             const ax = document.createElement("button");
                             const kx = document.createElement("button");
                             ax.textContent = "追加";
-                            let NAMEOFF="登録する";
-                            let h=number(Y)
-                            h=~~(h/10)
-                            for(let v=0; v<=FNUM-1; v++){
-                                if(FAV[v]==h){
-                                    NAMEOFF="登録解除";
-                                    let MEMOX=v;
-                                }
-                            }
                             kx.textContent = "お気に入り"+NAMEOFF; 
                             fragment2.appendChild(ax);
                             fragment2.appendChild(kaigyou);
