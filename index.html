@@ -188,8 +188,8 @@
                 let LIMIT=DB[i][4]-now;
                 if ( LIMIT <= 3 ){
                     const li = document.createElement("h1");
-                    let rx=number(DB[i][4])-number(NOW)
-                    rx=string(rx)
+                    let rx=Number(DB[i][4])-Number(NOW)
+                    rx=String(rx)
                     li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+rx;
                     fragment.appendChild(li);
                 }    
