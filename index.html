@@ -108,7 +108,7 @@
                                         }else{
                                             nu=nu+1;
                                             IDN[y/10]=IDN[y/10]+1;
-                                            db.push([y/10,IDN[y/10],select.value,tani.value,input.value+NOW]);
+                                            db.push([y/10,IDN[y/10],select.value,tani.value,number(input.value)+number(NOW)]);
                                             
                                         }
                                         document.getElementById("text").innerHTML = "";
@@ -188,7 +188,7 @@
                 let LIMIT=DB[i][4]-now;
                 if ( LIMIT <= 3 ){
                     const li = document.createElement("h1");
-                    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+number(DB[i][4])-number(NOW);
+                    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+string(number(DB[i][4])-number(NOW));
                     fragment.appendChild(li);
                 }    
             }
