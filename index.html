@@ -149,7 +149,7 @@
                                     const li = document.createElement("h1");
                                     const pq = document.createElement("button");
                                     let ry=Number(db[t][4])+Number(NOW)
-                                    ry=String(ry)
+                                    ry="あと"+String(ry)+"日"
                                     li.textContent = NAME[db[t][0]]+"["+db[t][1]+"]:"+db[t][2]+db[t][3]+"|"+ry;
                                     pq.textContent = "削除";
                                     et.textContent = "-------------------------";
@@ -190,7 +190,7 @@
                 if ( LIMIT <= 3 ){
                     const li = document.createElement("h1");
                     let rx=Number(DB[i][4])-Number(NOW)
-                    rx=String(rx)
+                    rx="あと"+String(rx)+"日"
                     li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+rx;
                     fragment.appendChild(li);
                 }    
