@@ -188,7 +188,8 @@
                 let LIMIT=DB[i][4]-now;
                 if ( LIMIT <= 3 ){
                     const li = document.createElement("h1");
-                    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+string(number(DB[i][4])-number(NOW));
+                    let rx=number(DB[i][4])-number(NOW)
+                    li.textContent = fn[DB[i][0]]+"["+DB[i][1]+"]:"+DB[i][2]+DB[i][3]+"|"+rx;
                     fragment.appendChild(li);
                 }    
             }
