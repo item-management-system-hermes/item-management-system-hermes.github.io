@@ -139,7 +139,7 @@
                                     const et = document.createElement("p");
                                     const li = document.createElement("h1");
                                     const pq = document.createElement("button");
-                                    let ry=Number(db[t][4])+Number(NOW)
+                                    let ry=Number(db[t][4])-Number(NOW)
                                     ry="あと"+String(ry)+"日"
                                     li.textContent = NAME[db[t][0]]+"["+db[t][1]+"]:"+db[t][2]+db[t][3]+"|"+ry;
                                     pq.textContent = "削除";
