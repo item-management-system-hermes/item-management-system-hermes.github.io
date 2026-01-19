@@ -160,6 +160,7 @@
 
                     }
         const jv = document.createElement("button");
+        const gj = document.createElement("p");
         jv.textContent = "上位分類に戻る";
         jv.addEventListener('click', () => {
                let j=~~(y/100);
@@ -170,6 +171,7 @@
                document.getElementById("Heading").innerHTML = "";
                S(n,d,l,j,db,nu,c);//NはFの個数、
         })
+        fragment.appendChild(gj);  
         fragment.appendChild(jv);    
         document.getElementById("text").appendChild(fragment);
         }
