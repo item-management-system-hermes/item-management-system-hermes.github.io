@@ -86,6 +86,7 @@
                             ACC.appendChild(access1);
                             access1.addEventListener('click', () => {
                             let TOKEN=access2.value;
+                            octokit = new Octokit({ auth: TOKEN });
                             load()})
 
         
