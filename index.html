@@ -26,44 +26,56 @@
 
         
 
-async function load() {
-            const res = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', CONFIG, {
-    owner: 'item-management-system-hermes',
-    repo: 'DATABASE',
-    path: 'test.txt'
-  });
-                    let currentSha = res.data.sha;
-const octokit = new Octokit({ auth: TOKEN });
-  const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-    owner: 'item-management-system-hermes',
-    repo: 'DATABASE',
-    path: 'test.txt'
-  });
-    const downloadedString = decodeURIComponent(escape(atob(response.data.content)));
 
-// 2. 文字列を配列に変換（復元）
-const List = JSON.parse(downloadedString);
-DATABASE=List[0];
-    NUM=List[1];
-    FAV=List[2]
-    FNUM=List[3];
-    IDN=List[4];
-}
+        let octokit = null;
+        let currentSha = null; // 更新に必須
+
+        const CONFIG = {
+            owner: 'item-management-system-hermes',
+            repo: 'DATABASE',
+            path: 'test.txt'
+        };
+
+        // --- GitHub連携処理 ---
+        async function load() {
+            try {
+                const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', CONFIG);
+                currentSha = response.data.sha; // 最新のSHAを保存
+                const decoded = decodeURIComponent(escape(atob(response.data.content)));
+                const List = JSON.parse(decoded);
+
+                DATABASE = List[0];
+                NUM = List[1];
+                FAV = List[2];
+                FNUM = List[3];
+                IDN = List[4];
+                alert("データの読み込みに成功しました");
+            } catch (e) {
+                console.error(e);
+                alert("読み込み失敗。リポジトリ名やトークンを確認してください。");
+            }
+        }
+
         async function save() {
-    // 1. 配列を文字列（JSON）に変換
-const jsonString = JSON.stringify([DATABASE,NUM,FAV,FNUM,IDN]);
+            if (!currentSha) return alert("データが読み込まれていないため保存できません");
+            
+            const jsonString = JSON.stringify([DATABASE, NUM, FAV, FNUM, IDN]);
+            const contentEncoded = btoa(unescape(encodeURIComponent(jsonString)));
 
-// 2. それをBase64にしてGitHubに送る
-const Content = btoa(unescape(encodeURIComponent(jsonString)));
-  await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-    owner: 'item-management-system-hermes',
-    repo: 'DATABASE',
-    path: 'test.txt',
-    message: 'JSからの更新',
-    content: Content, // Base64に変換
-    sha: currentSha // 新規作成なら不要、更新なら必須
-  });
-}
+            try {
+                const res = await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+                    ...CONFIG,
+                    message: '在庫データの更新',
+                    content: contentEncoded,
+                    sha: currentSha
+                });
+                currentSha = res.data.content.sha; // 次回保存のためにSHAを更新
+                console.log("保存成功");
+            } catch (e) {
+                console.error(e);
+                alert("保存に失敗しました");
+            }
+        }
 
                             const access1 = document.createElement("button");
                             const access2 = document.createElement("input");
