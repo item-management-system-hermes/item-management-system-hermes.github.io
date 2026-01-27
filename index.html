@@ -6,7 +6,7 @@
     <title>在庫管理</title>
 </head>
 <body>
-    <h1>在庫管理システム</h1>
+    <h1 id="ACC">在庫管理システム</h1>
 
     <p id="message">欠品表</p>
     <button id="btn">クリック</button>
@@ -18,27 +18,53 @@
     <p id="text"></p>
     <script>
         import { Octokit } from "https://esm.sh/@octokit/core";
+        let DATABASE=[[111,1,1,"パック",20480],[111,2,1,"パック",20467],[113,1,1,"パック",20468],]
+        let NUM=3
+        let FAV=[112]
+        let FNUM=1
+        let IDN={111:2,113:1}
 
-const octokit = new Octokit({ auth: "あなたのアクセストークン" });
+
+                            const access = document.createElement("buttun");
+                            access.textContent = 'text';
+                            const access = document.createElement("input");
+                            access.type = 'text';
+                            access.placeholder = "アクセストークンを入力";
+                            ACC.appendChild(access);
+                            ACC.appendChild(access);
+                            access.addEventListener('click', () => {
+        　　　　　　　　　　　　TOKEN=access.value})
+        
+const octokit = new Octokit({ auth: TOKEN });
 
 async function load() {
   const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
     owner: 'item-management-system-hermes',
-    repo: 'リポジトリ名',
+    repo: 'item-management-system-hermes.github.io',
     path: 'test.txt'
   });
+    const downloadedString = decodeURIComponent(escape(atob(response.data.content)));
 
-  // ファイル内容はBase64でエンコードされているのでデコードが必要
-  const content = atob(response.data.content);
-  console.log(content);
+// 2. 文字列を配列に変換（復元）
+const List = JSON.parse(downloadedString);
+DATABASE=List[0];
+    NUM=List[1];
+    FAV=List[2]
+    FNUM=List[3];
+    IDN=List[4];
 }
         async function updateFile(currentSha) {
+    // 1. 配列を文字列（JSON）に変換
+const jsonString = JSON.stringify(myList);
+
+// 2. それをBase64にしてGitHubに送る
+const content = btoa(unescape(encodeURIComponent(jsonString)));
   await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
     owner: 'item-management-system-hermes',
-    repo: 'リポジトリ名',
+    repo: 'item-management-system-hermes.github.io',
     path: 'test.txt',
     message: 'JSからの更新',
-    content: btoa('新しい内容です'), // Base64に変換
+    content: [DATABASE,NUM,FAV,FNUM,IDN], // Base64に変換
     sha: currentSha // 新規作成なら不要、更新なら必須
   });
 }
@@ -46,9 +72,6 @@ async function load() {
         let NOW = Date.now();
         NOW=Number(NOW)
         NOW=Math.floor(NOW / 86400000);
-        let FAV=[112]
-        let FNUM=1
-        let IDN={111:2,113:1}
         let NAME={111:"鶏肉",112:"豚肉",113:"牛肉"}
         function M(N,F,FN) {
         const fragment = document.createDocumentFragment();
@@ -217,8 +240,6 @@ async function load() {
         }
 
 
-        let DATABASE=[[111,1,1,"パック",20480],[111,2,1,"パック",20467],[113,1,1,"パック",20468],]
-        let NUM=3
         let CATEn=19
         let CATEd={1:"短期",2:"長期",3:"保存食",
                    11:"肉",12:"野菜",13:"その他",
