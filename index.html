@@ -25,14 +25,14 @@
         let IDN={111:2,113:1}
 
 
-                            const access = document.createElement("buttun");
-                            access.textContent = 'text';
-                            const access = document.createElement("input");
-                            access.type = 'text';
-                            access.placeholder = "アクセストークンを入力";
-                            ACC.appendChild(access);
-                            ACC.appendChild(access);
-                            access.addEventListener('click', () => {
+                            const access1 = document.createElement("buttun");
+                            const access2 = document.createElement("input");
+                            access1.textContent = 'text';
+                            access2.type = 'text';
+                            access2.placeholder = "アクセストークンを入力";
+                            ACC.appendChild(access2);
+                            ACC.appendChild(access1);
+                            access1.addEventListener('click', () => {
         　　　　　　　　　　　　TOKEN=access.value})
         
 const octokit = new Octokit({ auth: TOKEN });
