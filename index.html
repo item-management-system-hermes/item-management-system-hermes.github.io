@@ -16,7 +16,7 @@
     <button id="btn3">クリック</button>
     <p id="Heading"></p>
     <p id="text"></p>
-    <script>
+    <script type="module" >
         import { Octokit } from "https://esm.sh/@octokit/core";
         let DATABASE=[[111,1,1,"パック",20480],[111,2,1,"パック",20467],[113,1,1,"パック",20468],]
         let NUM=3
@@ -54,12 +54,12 @@ DATABASE=List[0];
     FNUM=List[3];
     IDN=List[4];
 }
-        async function updateFile(currentSha) {
+        async function updateFile() {
     // 1. 配列を文字列（JSON）に変換
-const jsonString = JSON.stringify(myList);
+const jsonString = JSON.stringify([DATABASE,NUM,FAV,FNUM,IDN]);
 
 // 2. それをBase64にしてGitHubに送る
-const content = btoa(unescape(encodeURIComponent(jsonString)));
+const Content = btoa(unescape(encodeURIComponent(jsonString)));
             const res = await octokit.request('GET /repos/{'item-management-system-hermes'}/{'DATABASE'}/contents/{'test.txt'}', CONFIG);
                     currentSha = res.data.sha;
   await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
@@ -67,7 +67,7 @@ const content = btoa(unescape(encodeURIComponent(jsonString)));
     repo: 'DATABASE',
     path: 'test.txt',
     message: 'JSからの更新',
-    content: [DATABASE,NUM,FAV,FNUM,IDN], // Base64に変換
+    content: Content, // Base64に変換
     sha: currentSha // 新規作成なら不要、更新なら必須
   });
 }
