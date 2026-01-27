@@ -23,7 +23,7 @@ const octokit = new Octokit({ auth: "あなたのアクセストークン" });
 
 async function load() {
   const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-    owner: 'ユーザー名',
+    owner: 'item-management-system-hermes',
     repo: 'リポジトリ名',
     path: 'test.txt'
   });
@@ -34,7 +34,7 @@ async function load() {
 }
         async function updateFile(currentSha) {
   await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-    owner: 'ユーザー名',
+    owner: 'item-management-system-hermes',
     repo: 'リポジトリ名',
     path: 'test.txt',
     message: 'JSからの更新',
