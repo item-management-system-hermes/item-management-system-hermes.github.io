@@ -17,6 +17,32 @@
     <p id="Heading"></p>
     <p id="text"></p>
     <script>
+        import { Octokit } from "https://esm.sh/@octokit/core";
+
+const octokit = new Octokit({ auth: "あなたのアクセストークン" });
+
+async function load() {
+  const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+    owner: 'ユーザー名',
+    repo: 'リポジトリ名',
+    path: 'test.txt'
+  });
+
+  // ファイル内容はBase64でエンコードされているのでデコードが必要
+  const content = atob(response.data.content);
+  console.log(content);
+}
+        async function updateFile(currentSha) {
+  await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+    owner: 'ユーザー名',
+    repo: 'リポジトリ名',
+    path: 'test.txt',
+    message: 'JSからの更新',
+    content: btoa('新しい内容です'), // Base64に変換
+    sha: currentSha // 新規作成なら不要、更新なら必須
+  });
+}
+        
         let NOW = Date.now();
         NOW=Number(NOW)
         NOW=Math.floor(NOW / 86400000);
