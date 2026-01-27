@@ -151,6 +151,7 @@ const Content = btoa(unescape(encodeURIComponent(jsonString)));
                                             IDN[y/10]=IDN[y/10]+1;
                                             let rz=Number(input.value)+Number(NOW)
                                             db.push([y/10,IDN[y/10],select.value,tani.value,rz]);
+                                            save();
                                             alert("追加成功");
                                         }
                                         document.getElementById("text").innerHTML = "";
@@ -171,10 +172,12 @@ const Content = btoa(unescape(encodeURIComponent(jsonString)));
                                         if(NAMEOFF=="登録解除"){
                                             FAV.splice(MEMOX, 1);
                                             FNUM=FNUM-1;
+                                            save();
                                             alert("お気に入り解除");
                                         }else{
                                             FNUM=FNUM+1;
                                             FAV.push(h);
+                                            save();
                                             alert("お気に入り登録");
                                         }
                                         document.getElementById("text").innerHTML = "";
@@ -202,6 +205,7 @@ const Content = btoa(unescape(encodeURIComponent(jsonString)));
                                     pq.addEventListener('click', () => {
                                         db.splice(t, 1);
                                         nu=nu-1;
+                                        save();
                                         alert(y+"分類");
                                         document.getElementById("text").innerHTML = "";
                                         document.getElementById("Heading").innerHTML = "";
