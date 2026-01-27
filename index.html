@@ -27,17 +27,18 @@
 
                             const access1 = document.createElement("buttun");
                             const access2 = document.createElement("input");
-                            access1.textContent = 'text';
+                            access1.textContent = '決定';
                             access2.type = 'text';
                             access2.placeholder = "アクセストークンを入力";
                             ACC.appendChild(access2);
                             ACC.appendChild(access1);
                             access1.addEventListener('click', () => {
-        　　　　　　　　　　　　TOKEN=access.value})
+        　　　　　　　　　　　　TOKEN=access.value;
+                            load()})
         
-const octokit = new Octokit({ auth: TOKEN });
 
 async function load() {
+const octokit = new Octokit({ auth: TOKEN });
   const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
     owner: 'item-management-system-hermes',
     repo: 'DATABASE',
@@ -59,6 +60,8 @@ const jsonString = JSON.stringify(myList);
 
 // 2. それをBase64にしてGitHubに送る
 const content = btoa(unescape(encodeURIComponent(jsonString)));
+            const res = await octokit.request('GET /repos/{'item-management-system-hermes'}/{'DATABASE'}/contents/{'test.txt'}', CONFIG);
+                    currentSha = res.data.sha;
   await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
     owner: 'item-management-system-hermes',
     repo: 'DATABASE',
