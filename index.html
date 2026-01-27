@@ -37,6 +37,8 @@
                             load()})
         
 
+            const res = await octokit.request('GET /repos/{'item-management-system-hermes'}/{'DATABASE'}/contents/{'test.txt'}', CONFIG);
+                    currentSha = res.data.sha;
 async function load() {
 const octokit = new Octokit({ auth: TOKEN });
   const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
@@ -60,8 +62,6 @@ const jsonString = JSON.stringify([DATABASE,NUM,FAV,FNUM,IDN]);
 
 // 2. それをBase64にしてGitHubに送る
 const Content = btoa(unescape(encodeURIComponent(jsonString)));
-            const res = await octokit.request('GET /repos/{'item-management-system-hermes'}/{'DATABASE'}/contents/{'test.txt'}', CONFIG);
-                    currentSha = res.data.sha;
   await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
     owner: 'item-management-system-hermes',
     repo: 'DATABASE',
