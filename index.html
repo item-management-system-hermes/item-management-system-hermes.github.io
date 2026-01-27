@@ -40,7 +40,7 @@ const octokit = new Octokit({ auth: TOKEN });
 async function load() {
   const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
     owner: 'item-management-system-hermes',
-    repo: 'item-management-system-hermes.github.io',
+    repo: 'DATABASE',
     path: 'test.txt'
   });
     const downloadedString = decodeURIComponent(escape(atob(response.data.content)));
@@ -61,7 +61,7 @@ const jsonString = JSON.stringify(myList);
 const content = btoa(unescape(encodeURIComponent(jsonString)));
   await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
     owner: 'item-management-system-hermes',
-    repo: 'item-management-system-hermes.github.io',
+    repo: 'DATABASE',
     path: 'test.txt',
     message: 'JSからの更新',
     content: [DATABASE,NUM,FAV,FNUM,IDN], // Base64に変換
