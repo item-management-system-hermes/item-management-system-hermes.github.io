@@ -39,9 +39,18 @@
         // --- GitHub連携処理 ---
         async function load() {
             try {
-                const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', CONFIG);
-                currentSha = response.data.sha; // 最新のSHAを保存
-                const decoded = decodeURIComponent(escape(atob(response.data.content)));
+// 1. Base64をバイナリ文字列に変換
+const binaryString = atob(response.data.content);
+
+// 2. バイナリ文字列をバイト配列（Uint8Array）に変換
+const bytes = new Uint8Array(binaryString.length);
+for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+}
+
+// 3. UTF-8としてデコード（ここで日本語が復活する）
+const decoded = new TextDecoder().decode(bytes);
+                
                 const List = JSON.parse(decoded);
 
                 DATABASE = List[0];
