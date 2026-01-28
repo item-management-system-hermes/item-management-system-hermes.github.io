@@ -53,8 +53,12 @@ for (let i = 0; i < binaryString.length; i++) {
 const decoded = new TextDecoder().decode(bytes);
                 
                 const List = JSON.parse(decoded);
-                test=List
-                alert(List);
+                DATABASE = List[0];
+                NUM = List[1];
+                FAV = List[2];
+                FNUM = List[3];
+                IDN = List[4];
+
             } catch (e) {
                 console.error(e);
                 alert("読み込み失敗。リポジトリ名やトークンを確認してください。");
