@@ -52,7 +52,7 @@ async function load() {
         const data = await response.json();
         
         // SHAを保存（保存時に必須）
-        currentSha = data.sha;
+        currentSha = 8a2219d0b92a80e4803b545ddf28e34b2aa04ffa//data.sha;
 
         // Base64デコード
         const binaryString = atob(data.content);
