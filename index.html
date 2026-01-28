@@ -102,12 +102,16 @@ async function load() {
                             access2.type = 'text';
                             access2.placeholder = "アクセストークンを入力";
                             ACC.appendChild(access2);
-                            access1.appendChild(access0);
                             ACC.appendChild(access1);
+                            ACC.appendChild(access0);
                             access1.addEventListener('click', () => {
                             TOKEN=access2.value;
                             octokit = new Octokit({ auth: TOKEN });
-                            load()})
+                            load();
+                            const access0 = document.createElement("p");
+                            access0.textContent = List;
+                            ACC.appendChild(access0);
+                            })
 
         
         let NOW = Date.now();
