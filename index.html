@@ -65,6 +65,7 @@ async function load() {
         const List = JSON.parse(decoded);
         [DATABASE, NUM, FAV, FNUM, IDN] = List; // 分割代入でスッキリ
         alert("読み込み完了");
+        console.log("変換後の型:", Array.isArray(List) ? "配列です" : "オブジェクトです");
 
     } catch (e) {
         console.error(e);
