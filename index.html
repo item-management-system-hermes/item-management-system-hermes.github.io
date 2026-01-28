@@ -64,7 +64,11 @@ async function load() {
         const decoded = new TextDecoder().decode(bytes);
         
         List = JSON.parse(decoded);
-        [DATABASE, NUM, FAV, FNUM, IDN] = List; // 分割代入でスッキリ
+        DATABASE= List[0];
+        NUM = List[1]; 
+        FAV= List[2]; 
+        FNUM= List[3]; 
+        IDN= List[4]; 
         alert("読み込み完了");
         console.log(List);
 
