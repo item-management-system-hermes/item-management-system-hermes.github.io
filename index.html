@@ -288,11 +288,11 @@ async function load() {
         let CATEl=[0,10,20,30,110,120,130,210,220,230,240,250,260,310,320,330,340,350,360]
         let C=0
         let X=0
+      function f(){  
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
         const button3 = document.getElementById('btn3');
         
-      function f(){  
         button.addEventListener('click', () => {
             alert("欠品表");
             document.getElementById("text").innerHTML = "";
@@ -324,6 +324,8 @@ async function load() {
                             octokit = new Octokit({ auth: TOKEN });
                             load();
                             const access0 = document.createElement("p");
+                            document.getElementById("text").innerHTML = "";
+                            document.getElementById("Heading").innerHTML = "";
                             f()
                             //access0.textContent =List;
                             //ACC.appendChild(access0);
