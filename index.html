@@ -9,7 +9,7 @@
     <h1 id="ACC">在庫管理システム</h1>
 
     <p id="message">欠品表</p>
-    <button id="btn">クリック</button>
+    <button id="btn">List</button>
     <p id="message2">検索</p>
     <button id="btn2">クリック</button>
     <p id="message3">消費期限間近</p>
@@ -23,6 +23,7 @@
         let FAV=[112]
         let FNUM=1
         let IDN={111:2,113:1}
+        let test
 
         
 
@@ -52,7 +53,7 @@ for (let i = 0; i < binaryString.length; i++) {
 const decoded = new TextDecoder().decode(bytes);
                 
                 const List = JSON.parse(decoded);
-
+                test=List
                 DATABASE = List[0];
                 NUM = List[1];
                 FAV = List[2];
