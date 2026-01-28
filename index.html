@@ -94,16 +94,13 @@ async function load() {
             }
         }
 
-                            const access0 = document.createElement("p");
                             const access1 = document.createElement("button");
                             const access2 = document.createElement("input");
-                            access0.textContent = List;
                             access1.textContent = '決定';
                             access2.type = 'text';
                             access2.placeholder = "アクセストークンを入力";
                             ACC.appendChild(access2);
                             ACC.appendChild(access1);
-                            ACC.appendChild(access0);
                             access1.addEventListener('click', () => {
                             TOKEN=access2.value;
                             octokit = new Octokit({ auth: TOKEN });
