@@ -66,7 +66,7 @@ async function load() {
         List = JSON.parse(decoded);
         [DATABASE, NUM, FAV, FNUM, IDN] = List; // 分割代入でスッキリ
         alert("読み込み完了");
-        console.log("変換後の型:", Array.isArray(List) ? "配列です" : "オブジェクトです");
+        console.log(List);
 
     } catch (e) {
         console.error(e);
@@ -106,8 +106,8 @@ async function load() {
                             octokit = new Octokit({ auth: TOKEN });
                             load();
                             const access0 = document.createElement("p");
-                            access0.textContent =List;
-                            ACC.appendChild(access0);
+                            //access0.textContent =List;
+                            //ACC.appendChild(access0);
                             })
 
         
