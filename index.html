@@ -98,21 +98,6 @@ async function load() {
             }
         }
 
-                            const access1 = document.createElement("button");
-                            const access2 = document.createElement("input");
-                            access1.textContent = '決定';
-                            access2.type = 'text';
-                            access2.placeholder = "アクセストークンを入力";
-                            ACC.appendChild(access2);
-                            ACC.appendChild(access1);
-                            access1.addEventListener('click', () => {
-                            TOKEN=access2.value;
-                            octokit = new Octokit({ auth: TOKEN });
-                            load();
-                            const access0 = document.createElement("p");
-                            //access0.textContent =List;
-                            //ACC.appendChild(access0);
-                            })
 
         
         let NOW = Date.now();
@@ -299,7 +284,7 @@ async function load() {
         let CATEl=[0,10,20,30,110,120,130,210,220,230,240,250,260,310,320,330,340,350,360]
         let C=0
         let X=0
-        
+      def f(){  
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
         const button3 = document.getElementById('btn3');
@@ -321,7 +306,25 @@ async function load() {
             document.getElementById("text").innerHTML = "";
             document.getElementById("Heading").innerHTML = "";
             D(NUM,DATABASE,NOW,NAME);
-        })
+        })}
+        
+                            const access1 = document.createElement("button");
+                            const access2 = document.createElement("input");
+                            access1.textContent = '決定';
+                            access2.type = 'text';
+                            access2.placeholder = "アクセストークンを入力";
+                            ACC.appendChild(access2);
+                            ACC.appendChild(access1);
+                            access1.addEventListener('click', () => {
+                            TOKEN=access2.value;
+                            octokit = new Octokit({ auth: TOKEN });
+                            load();
+                            const access0 = document.createElement("p");
+                            f()
+                            //access0.textContent =List;
+                            //ACC.appendChild(access0);
+                            })
+        f()
         //<label for="name">食材の種類：</label><input type="text" id="name" name="user_name" placeholder="例：ひらがなで">
     </script>
 </body>
