@@ -24,8 +24,6 @@
         let FNUM=1
         let IDN={111:2,113:1}
         let TOKEN
-        let List=0
-
         
 
 
@@ -64,7 +62,7 @@ async function load() {
         }
         const decoded = new TextDecoder().decode(bytes);
         
-        List = JSON.parse(decoded);
+        const List = JSON.parse(decoded);
         [DATABASE, NUM, FAV, FNUM, IDN] = List; // 分割代入でスッキリ
         alert("読み込み完了");
 
