@@ -38,42 +38,40 @@
         };
 
         // --- GitHub連携処理 ---
-        async function load() {
-            try {// GitHub APIのURL構築
+async function load() {
+    try {
         const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`;
         
-        // データの取得
         const response = await fetch(url, {
             headers: {
-                 'Authorization': TOKEN, // プライベートリポジトリの場合は必須
+                'Authorization': `token ${TOKEN}`, // 形式を修正
                 'Accept': 'application/vnd.github.v3+json'
             }
         });
-// 1. Base64をバイナリ文字列に変換
-const binaryString = atob(response.data.content);
 
-// 2. バイナリ文字列をバイト配列（Uint8Array）に変換
-const bytes = new Uint8Array(binaryString.length);
-for (let i = 0; i < binaryString.length; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-}
+        if (!response.ok) throw new Error("取得に失敗しました");
+        const data = await response.json();
+        
+        // SHAを保存（保存時に必須）
+        currentSha = data.sha;
 
-// 3. UTF-8としてデコード（ここで日本語が復活する）
-const decoded = new TextDecoder().decode(bytes);
-                
-                const List = JSON.parse(decoded);
-                DATABASE = List[0];
-                NUM = List[1];
-                FAV = List[2];
-                FNUM = List[3];
-                IDN = List[4];
-
-            } catch (e) {
-                console.error(e);
-                alert("読み込み失敗。リポジトリ名やトークンを確認してください。");
-            }
+        // Base64デコード
+        const binaryString = atob(data.content);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
         }
+        const decoded = new TextDecoder().decode(bytes);
+        
+        const List = JSON.parse(decoded);
+        [DATABASE, NUM, FAV, FNUM, IDN] = List; // 分割代入でスッキリ
+        alert("読み込み完了");
 
+    } catch (e) {
+        console.error(e);
+        alert("読み込み失敗。設定を確認してください。");
+    }
+}
         async function save() {
             if (!currentSha) return alert("データが読み込まれていないため保存できません");
             
@@ -103,7 +101,7 @@ const decoded = new TextDecoder().decode(bytes);
                             ACC.appendChild(access2);
                             ACC.appendChild(access1);
                             access1.addEventListener('click', () => {
-                            let TOKEN=access2.value;
+                            TOKEN=access2.value;
                             octokit = new Octokit({ auth: TOKEN });
                             load()})
 
