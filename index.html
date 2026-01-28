@@ -23,7 +23,7 @@
         let FAV=[112]
         let FNUM=1
         let IDN={111:2,113:1}
-        let test
+        let TOKEN
 
         
 
@@ -39,7 +39,16 @@
 
         // --- GitHub連携処理 ---
         async function load() {
-            try {
+            try {// GitHub APIのURL構築
+        const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`;
+        
+        // データの取得
+        const response = await fetch(url, {
+            headers: {
+                 'Authorization': TOKEN, // プライベートリポジトリの場合は必須
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        });
 // 1. Base64をバイナリ文字列に変換
 const binaryString = atob(response.data.content);
 
