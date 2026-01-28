@@ -9,7 +9,7 @@
     <h1 id="ACC">在庫管理システム</h1>
 
     <p id="message">欠品表</p>
-    <button id="btn">List</button>
+    <button id="btn">クリック</button>
     <p id="message2">検索</p>
     <button id="btn2">クリック</button>
     <p id="message3">消費期限間近</p>
@@ -54,12 +54,7 @@ const decoded = new TextDecoder().decode(bytes);
                 
                 const List = JSON.parse(decoded);
                 test=List
-                DATABASE = List[0];
-                NUM = List[1];
-                FAV = List[2];
-                FNUM = List[3];
-                IDN = List[4];
-                alert("データの読み込みに成功しました");
+                alert(List);
             } catch (e) {
                 console.error(e);
                 alert("読み込み失敗。リポジトリ名やトークンを確認してください。");
