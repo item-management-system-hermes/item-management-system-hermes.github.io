@@ -70,7 +70,7 @@ async function load() {
         FAV= List[2]; 
         FNUM= List[3]; 
         IDN= List[4]; 
-        alert("読み込み完了");
+        //alert("読み込み完了");
         console.log(DATABASE);
         console.log(NUM);
         console.log(FAV);
@@ -79,7 +79,7 @@ async function load() {
 
     } catch (e) {
         console.error(e);
-        alert("読み込み失敗。設定を確認してください。");
+        //alert("読み込み失敗。設定を確認してください。");
     }
 }
         async function save() {
@@ -99,7 +99,7 @@ async function load() {
                 console.log("保存成功");
             } catch (e) {
                 console.error(e);
-                alert("保存に失敗しました");
+                //alert("保存に失敗しました");
             }
         }
 
@@ -135,7 +135,7 @@ async function load() {
                         cl.addEventListener('click', () => {
                           let j=Y*10;
                           c=0;
-                          alert(j+"分類");
+                          //alert(j+"分類");
                           document.getElementById("text").innerHTML = "";
                           S(n,d,l,j,db,nu,c);//NはFの個数、
                        })
@@ -178,14 +178,14 @@ async function load() {
                                         if(tani.value=="" ||input.value==""){
                                             FAV.splice(MEMOX, 1);
                                             FNUM=FNUM-1;
-                                            alert("入力欄に空欄が存在します");
+                                            //alert("入力欄に空欄が存在します");
                                         }else{
                                             nu=nu+1;
                                             IDN[y/10]=IDN[y/10]+1;
                                             let rz=Number(input.value)+Number(NOW)
                                             db.push([y/10,IDN[y/10],select.value,tani.value,rz]);
                                             save();
-                                            alert("追加成功");
+                                            //alert("追加成功");
                                         }
                                         document.getElementById("text").innerHTML = "";
                                         document.getElementById("Heading").innerHTML = "";
@@ -206,12 +206,12 @@ async function load() {
                                             FAV.splice(MEMOX, 1);
                                             FNUM=FNUM-1;
                                             save();
-                                            alert("お気に入り解除");
+                                            //alert("お気に入り解除");
                                         }else{
                                             FNUM=FNUM+1;
                                             FAV.push(h);
                                             save();
-                                            alert("お気に入り登録");
+                                            //alert("お気に入り登録");
                                         }
                                         document.getElementById("text").innerHTML = "";
                                         document.getElementById("Heading").innerHTML = "";
@@ -239,7 +239,7 @@ async function load() {
                                         db.splice(t, 1);
                                         nu=nu-1;
                                         save();
-                                        alert(y+"分類");
+                                        //alert(y+"分類");
                                         document.getElementById("text").innerHTML = "";
                                         document.getElementById("Heading").innerHTML = "";
                                         S(CATEn,CATEd,CATEl,y,db,nu,c);//NはFの個数、
@@ -255,7 +255,7 @@ async function load() {
                let j=~~(y/100);
                j=j*10;
                c=0;
-               alert(j+"分類");
+               //alert(j+"分類");
                document.getElementById("text").innerHTML = "";
                document.getElementById("Heading").innerHTML = "";
                S(n,d,l,j,db,nu,c);//NはFの個数、
@@ -295,19 +295,19 @@ async function load() {
         const button3 = document.getElementById('btn3');
         
         button.addEventListener('click', () => {
-            alert("欠品表");
+            //alert("欠品表");
             document.getElementById("text").innerHTML = "";
             document.getElementById("Heading").innerHTML = "";
             M(FNUM,FAV,NAME);//NはFの個数、
         })
         button2.addEventListener('click', () => {
-            alert("0分類");
+            //alert("0分類");
             document.getElementById("text").innerHTML = "";
             document.getElementById("Heading").innerHTML = "";
             S(CATEn,CATEd,CATEl,X,DATABASE,NUM,C);//NはFの個数、
         })
         button3.addEventListener('click', () => {
-            alert("期限間近");
+            //alert("期限間近");
             document.getElementById("text").innerHTML = "";
             document.getElementById("Heading").innerHTML = "";
             D(NUM,DATABASE,NOW,NAME);
