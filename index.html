@@ -193,10 +193,9 @@ async function load() {
                                             alert("入力欄に空欄が存在します");
                                         }else{
                                             nu=nu+1;
-                                            IDN[y/10]=IDN[y/10]+1;
+                                            IDN=IDN+1;
                                             let rz=Number(input.value)+Number(NOW)
-                                            db.push([y/10,IDN[y/10],select.value,tani.value,rz]);
-                                            save();
+                                            db.push([y/10,IDN,select.value,tani.value,rz]);
                                             alert("追加成功");
                                         }
                                         document.getElementById("text").innerHTML = "";
