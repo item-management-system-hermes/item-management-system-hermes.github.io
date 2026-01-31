@@ -319,6 +319,7 @@ async function load() {
         })}
 
                             const access1 = document.createElement("button");
+                            const save0 = document.createElement("h6");
                             const save1 = document.createElement("button");
                             const access2 = document.createElement("input");
                             access1.textContent = '決定';
@@ -327,6 +328,7 @@ async function load() {
                             access2.placeholder = "アクセストークンを入力";
                             ACC.appendChild(access2);
                             ACC.appendChild(access1);
+                            ACC.appendChild(save0);
                             ACC.appendChild(save1);
                             save1.addEventListener('click', () => {
                                 savedata();
