@@ -18,15 +18,17 @@
     <p id="text"></p>
     <script type="module" >
         import { Octokit } from "https://esm.sh/@octokit/core";
+        let DATABASE=[]
         let DATABASE
         let NUM
+        let FAV=[]
         let FAV
         let FNUM
         let IDN
-        
+
         let TOKEN
         let List
-        
+
 
 
         let octokit = null;
@@ -42,7 +44,7 @@
 async function load() {
     try {
         const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`;
-        
+
         const response = await fetch(url, {
             headers: {
                 'Authorization': `token ${TOKEN}`, // 形式を修正
@@ -52,7 +54,7 @@ async function load() {
 
         if (!response.ok) throw new Error("取得に失敗しました");
         const data = await response.json();
-        
+
         // SHAを保存（保存時に必須）
         currentSha = data.sha;
 
@@ -63,14 +65,14 @@ async function load() {
             bytes[i] = binaryString.charCodeAt(i);
         }
         const decoded = new TextDecoder().decode(bytes);
-        
+
         List = JSON.parse(decoded);
         DATABASE= List[0];
         NUM = List[1]; 
         FAV= List[2]; 
         FNUM= List[3]; 
         IDN= List[4]; 
-        //alert("読み込み完了");
+        alert("読み込み完了");
         console.log(DATABASE);
         console.log(NUM);
         console.log(FAV);
@@ -79,12 +81,12 @@ async function load() {
 
     } catch (e) {
         console.error(e);
-        //alert("読み込み失敗。設定を確認してください。");
+        alert("読み込み失敗。設定を確認してください。");
     }
 }
         async function save() {
             if (!currentSha) return alert("データが読み込まれていないため保存できません");
-            
+
             const jsonString = JSON.stringify([DATABASE, NUM, FAV, FNUM, IDN]);
             const contentEncoded = btoa(unescape(encodeURIComponent(jsonString)));
 
@@ -99,12 +101,12 @@ async function load() {
                 console.log("保存成功");
             } catch (e) {
                 console.error(e);
-                //alert("保存に失敗しました");
+                alert("保存に失敗しました");
             }
         }
 
 
-        
+
         let NOW = Date.now();
         NOW=Number(NOW)
         NOW=Math.floor(NOW / 86400000);
@@ -135,7 +137,7 @@ async function load() {
                         cl.addEventListener('click', () => {
                           let j=Y*10;
                           c=0;
-                          //alert(j+"分類");
+                          alert(j+"分類");
                           document.getElementById("text").innerHTML = "";
                           S(n,d,l,j,db,nu,c);//NはFの個数、
                        })
@@ -178,14 +180,14 @@ async function load() {
                                         if(tani.value=="" ||input.value==""){
                                             FAV.splice(MEMOX, 1);
                                             FNUM=FNUM-1;
-                                            //alert("入力欄に空欄が存在します");
+                                            alert("入力欄に空欄が存在します");
                                         }else{
                                             nu=nu+1;
                                             IDN[y/10]=IDN[y/10]+1;
                                             let rz=Number(input.value)+Number(NOW)
                                             db.push([y/10,IDN[y/10],select.value,tani.value,rz]);
                                             save();
-                                            //alert("追加成功");
+                                            alert("追加成功");
                                         }
                                         document.getElementById("text").innerHTML = "";
                                         document.getElementById("Heading").innerHTML = "";
@@ -206,12 +208,12 @@ async function load() {
                                             FAV.splice(MEMOX, 1);
                                             FNUM=FNUM-1;
                                             save();
-                                            //alert("お気に入り解除");
+                                            alert("お気に入り解除");
                                         }else{
                                             FNUM=FNUM+1;
                                             FAV.push(h);
                                             save();
-                                            //alert("お気に入り登録");
+                                            alert("お気に入り登録");
                                         }
                                         document.getElementById("text").innerHTML = "";
                                         document.getElementById("Heading").innerHTML = "";
@@ -239,7 +241,7 @@ async function load() {
                                         db.splice(t, 1);
                                         nu=nu-1;
                                         save();
-                                        //alert(y+"分類");
+                                        alert(y+"分類");
                                         document.getElementById("text").innerHTML = "";
                                         document.getElementById("Heading").innerHTML = "";
                                         S(CATEn,CATEd,CATEl,y,db,nu,c);//NはFの個数、
@@ -255,7 +257,7 @@ async function load() {
                let j=~~(y/100);
                j=j*10;
                c=0;
-               //alert(j+"分類");
+               alert(j+"分類");
                document.getElementById("text").innerHTML = "";
                document.getElementById("Heading").innerHTML = "";
                S(n,d,l,j,db,nu,c);//NはFの個数、
@@ -293,26 +295,26 @@ async function load() {
         const button = document.getElementById('btn');
         const button2 = document.getElementById('btn2');
         const button3 = document.getElementById('btn3');
-        
+
         button.addEventListener('click', () => {
-            //alert("欠品表");
+            alert("欠品表");
             document.getElementById("text").innerHTML = "";
             document.getElementById("Heading").innerHTML = "";
             M(FNUM,FAV,NAME);//NはFの個数、
         })
         button2.addEventListener('click', () => {
-            //alert("0分類");
+            alert("0分類");
             document.getElementById("text").innerHTML = "";
             document.getElementById("Heading").innerHTML = "";
             S(CATEn,CATEd,CATEl,X,DATABASE,NUM,C);//NはFの個数、
         })
         button3.addEventListener('click', () => {
-            //alert("期限間近");
+            alert("期限間近");
             document.getElementById("text").innerHTML = "";
             document.getElementById("Heading").innerHTML = "";
             D(NUM,DATABASE,NOW,NAME);
         })}
-        
+
                             const access1 = document.createElement("button");
                             const access2 = document.createElement("input");
                             access1.textContent = '決定';
