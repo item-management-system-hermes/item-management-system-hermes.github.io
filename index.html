@@ -81,8 +81,10 @@ async function load() {
         console.error(e);
         alert("読み込み失敗。設定を確認してください。");
     }
-}
-        async function save() {
+} 
+        function save() {}//save関数機能停止用
+        
+        async function savedata() {
             if (!currentSha) return alert("データが読み込まれていないため保存できません");
 
             const jsonString = JSON.stringify([DATABASE, NUM, FAV, FNUM, IDN]);
@@ -314,12 +316,19 @@ async function load() {
         })}
 
                             const access1 = document.createElement("button");
+                            const save1 = document.createElement("button");
                             const access2 = document.createElement("input");
                             access1.textContent = '決定';
+                            save1.textContent = 'セーブする(セーブしないとデータは保存されません)';
                             access2.type = 'text';
                             access2.placeholder = "アクセストークンを入力";
                             ACC.appendChild(access2);
                             ACC.appendChild(access1);
+                            ACC.appendChild(save1);
+                            save1.addEventListener('click', () => {
+                                savedata();
+                                alert("セーブ完了");
+                            })
                             access1.addEventListener('click', () => {
                             TOKEN=access2.value;
                             octokit = new Octokit({ auth: TOKEN });
