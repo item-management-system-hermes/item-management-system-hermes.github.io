@@ -84,25 +84,49 @@ async function load() {
 } 
         function save() {}//save関数機能停止用
         
-        async function savedata() {
-            if (!currentSha) return alert("データが読み込まれていないため保存できません");
+        async function savedata() {if (!currentSha) return alert("データが読み込まれていないため保存できません");
 
-            const jsonString = JSON.stringify([DATABASE, NUM, FAV, FNUM, IDN]);
-            const contentEncoded = btoa(unescape(encodeURIComponent(jsonString)));
+    // 保存中の多重送信防止（必要に応じて）
+    const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`;
+    
+    // データの準備（日本語などの多言語対応）
+    const jsonString = JSON.stringify([DATABASE, NUM, FAV, FNUM, IDN]);
+    const contentEncoded = btoa(unescape(encodeURIComponent(jsonString)));
 
-            try {
-                const res = await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-                    ...CONFIG,
-                    message: '在庫データの更新',
-                    content: contentEncoded,
-                    sha: currentSha
-                });
-                currentSha = res.data.content.sha; // 次回保存のためにSHAを更新
-                console.log("保存成功");
-            } catch (e) {
-                console.error(e);
-                alert("保存に失敗しました");
-            }
+    const body = {
+        message: "在庫データの更新",
+        content: contentEncoded,
+        sha: currentSha // これがないとGitHub側で上書き許可が下りない
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${TOKEN}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "保存に失敗しました");
+        }
+
+        const resData = await response.json();
+        
+        // 次回の保存のために、新しいSHAに更新する
+        currentSha = resData.content.sha; 
+        
+        alert("保存成功！");
+        console.log("Updated SHA:", currentSha);
+
+    } catch (e) {
+        console.error("Save Error:", e);
+        alert(`保存エラー: ${e.message}`);
+    }
         }
 
 
