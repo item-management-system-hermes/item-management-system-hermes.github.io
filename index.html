@@ -221,7 +221,7 @@ async function load() {
                                             //FNUM=FNUM-1;
                                             alert("入力欄に空欄が存在します");
                                         }else{
-                                            nu+=1;
+                                            NUM+=1;
                                             if (IDN==1000){
                                                 IDN=0;
                                             }
@@ -280,7 +280,7 @@ async function load() {
                                     fragment.appendChild(et);
                                     pq.addEventListener('click', () => {
                                         db.splice(t, 1);
-                                        nu=nu-1;
+                                        NUM=NUM-1;
                                         save();
                                         alert(y+"分類");
                                         document.getElementById("text").innerHTML = "";
